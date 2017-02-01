@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<!-- ascii art created by
+    http://patorjk.com/software/taag/#p=display&f=Big%20Money-ne&t=navigation
+-->
+<html lang="en">
+
+<head>
+  <style>
+  @font-face {
+    font-family: fontTwo;
+    src: url(../font2.ttf);
+  }
+ audio {
+      width: 48px; 
+      position: relative;
+      top:10px;
+     }
+  #info {
+    font-size: 20px;
+    font-style: italic;
+    }
+    #div_start {
+    float: right;
+    }
+    #headline {
+    text-decoration: none
+    }
+    #results {
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: left;
+    min-height: 150px;
+
+
+
+    }
+    #start_button {
+    border: 0;
+    background-color:transparent;
+    padding: 0;
+    }
+    .interim {
+    color: gray;
+    }
+    .final {
+    color: black;
+    padding-right: 3px;
+    }
+    .button {
+    display: none;
+    }
+    .marquee {
+    margin: 20px auto;
+    }
+
+    #buttons {
+    margin: 10px 0;
+    position: relative;
+    top: -50px;
+    }
+
+    #copy {
+    margin-top: 20px;
+    }
+
+    #copy > div {
+    display: none;
+    margin: 0 70px;
+    }
+    .red {
+    color: red;
+    }
+    .green {
+    color: green;
+    }
+    .correct{
+      width: 160px;
+      height: auto;
+    }
+    #title{
+      font-family: fontTwo;
+    }
+    </style>
+    <style>
+  a.c1 {font-weight: normal;}
+    </style>
+    <style>
+    .testBox
+    {
+      
+    }
+    .sentence
+    {
+      font-size: 30px;
+    }
+    #results
+    {
+       background-color: grey;
+    }
+    .introDiv 
+    {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: black;
+    
+      margin: 0 auto; 
+      z-index: 1;
+      font-family: fontTwo;
+    }
+    </style>
+
+
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>NativeGap test</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/clean-blog.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+
+
+</head>
+
+<body>
+   
+
+    <!-- Intro div
+     /$$$$$$ /$$   /$$ /$$$$$$$$ /$$$$$$$   /$$$$$$ 
+    |_  $$_/| $$$ | $$|__  $$__/| $$__  $$ /$$__  $$
+      | $$  | $$$$| $$   | $$   | $$  \ $$| $$  \ $$
+      | $$  | $$ $$ $$   | $$   | $$$$$$$/| $$  | $$
+      | $$  | $$  $$$$   | $$   | $$__  $$| $$  | $$
+      | $$  | $$\  $$$   | $$   | $$  \ $$| $$  | $$
+     /$$$$$$| $$ \  $$   | $$   | $$  | $$|  $$$$$$/
+    |______/|__/  \__/   |__/   |__/  |__/ \______/ 
+    -->
+    <script type="text/javascript">
+    function changeIntroScreen (which) {
+      $("#intro"+which).show();
+      // body...
+    }
+    function finishIntro () {
+      // body...
+      $(".introDiv").hide();
+      changeCurrentTest(1);
+      $(".page-heading").css("padding", "30px");
+    }
+    </script>
+    <div class="introDiv" id="intro1">
+      <div class="intro-header" style="background-color:black;')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="page-heading" id="title">
+                        <h1>NativeGap</h1>
+                        <hr class="small">
+                        <span class="subheading">初めてのご利用ですか?</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <center>
+      <div><button type="button" onclick="changeIntroScreen(2)">はい</button> </div>
+      <div style="color:black;">hehe</div>
+      <div> <button type="button" onclick="finishIntro()">いいえ</button> </div>
+      </center>
+    </div>
+
+    <!-- intro page 2 -->
+    <div class="introDiv" id="intro2" style="display: none;z-index:2;">
+      <div class="intro-header" style="background-color:black;')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="page-heading">
+                        <h1>Page 2</h1>
+                        <hr class="small">
+                        <span class="subheading">初めてのご利用ですか?</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <center>
+      <div><button type="button" onclick="changeIntroScreen(3)">OK</button> </div>
+      <div style="color:black;">hehe</div>
+      <!--<div> <button type="button" onclick="finishIntro()">いいえ</button> </div>-->
+      </center>
+
+    </div>
+    <!-- intro page 3 -->
+    <div class="introDiv" id="intro3" style="display: none;z-index:3;">
+      <div class="intro-header" style="background-color:black;')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="page-heading">
+                        <h1>Page 3</h1>
+                        <hr class="small">
+                        <span class="subheading">初めてのご利用ですか?</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <center>
+      <!--<div><button type="button" onclick="changeIntroScreen(1)">はい</button> </div>-->
+      <!--<div style="color:black;">hehe</div>-->
+      <div> <button type="button" onclick="finishIntro()">OK</button> </div>
+      </center>
+
+    </div>
+    <!-- Navigation 
+                                /$$                       /$$     /$$                    
+                               |__/                      | $$    |__/                    
+ /$$$$$$$   /$$$$$$  /$$    /$$ /$$  /$$$$$$   /$$$$$$  /$$$$$$   /$$  /$$$$$$  /$$$$$$$ 
+| $$__  $$ |____  $$|  $$  /$$/| $$ /$$__  $$ |____  $$|_  $$_/  | $$ /$$__  $$| $$__  $$
+| $$  \ $$  /$$$$$$$ \  $$/$$/ | $$| $$  \ $$  /$$$$$$$  | $$    | $$| $$  \ $$| $$  \ $$
+| $$  | $$ /$$__  $$  \  $$$/  | $$| $$  | $$ /$$__  $$  | $$ /$$| $$| $$  | $$| $$  | $$
+| $$  | $$|  $$$$$$$   \  $/   | $$|  $$$$$$$|  $$$$$$$  |  $$$$/| $$|  $$$$$$/| $$  | $$
+|__/  |__/ \_______/    \_/    |__/ \____  $$ \_______/   \___/  |__/ \______/ |__/  |__/
+                                    /$$  \ $$                                            
+                                   |  $$$$$$/                                            
+                                    \______/                                            
+    -->
+    <nav class="navbar navbar-default navbar-fixed-top" >
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Brand</a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#">Home</a>
+                    </li>
+                    <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="/tests">Tests</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                    <!--<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>-->
+                    <!--<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>-->
+                </ul>
+            </div>
+        </div>
+        <!-- /.container -->
+    </nav>
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-color:black;top:50px;position:relative;">
+        <div class="container">
+            <div class="row">
+                s
+            </div>
+            
+        </div>
+    </header>
+    
+    
+    <!-- Main Content
+                                /$$                           /$$    
+                                | $$                          | $$    
+  /$$$$$$$  /$$$$$$  /$$$$$$$  /$$$$$$    /$$$$$$  /$$$$$$$  /$$$$$$  
+ /$$_____/ /$$__  $$| $$__  $$|_  $$_/   /$$__  $$| $$__  $$|_  $$_/  
+| $$      | $$  \ $$| $$  \ $$  | $$    | $$$$$$$$| $$  \ $$  | $$    
+| $$      | $$  | $$| $$  | $$  | $$ /$$| $$_____/| $$  | $$  | $$ /$$
+|  $$$$$$$|  $$$$$$/| $$  | $$  |  $$$$/|  $$$$$$$| $$  | $$  |  $$$$/
+ \_______/ \______/ |__/  |__/   \___/   \_______/|__/  |__/   \___/  
+                                                                      -->
+
+    <div class="container" style="min-height:390px;">
+        <div class="row" >
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+
+
+
+            <center>
+
+            <!--  -->
+            <!-- test sentences -->
+            <!--  -->
+            {% set i = 1 %}
+            {% set all = "" %}
+            {% for s in test.sentences %}
+              <div class="testBox" id="testBox{{i}}">
+                  <button type="button" onclick="testActivated({{i}})">Test</button> 
+                  <button type="button" onclick="playAudio({{i}})">Audio</button> 
+                  <!--<audio controls><source src="../audio/audio_{{i}}.mp3" type="audio/mpeg">audio not supported</audio>-->
+                  <div id="gap{{i}}"></div>
+                 <!-- <p id="sentence1">We were hunters and foragers, </p> -->
+                  <p class = "sentence" id="sentence{{i}}">{{s}} </p> 
+                  <div id="correct{{i}}" class="correctDiv" style="display: none;"><img class="correct" src="../giphy.gif" loop=1></div>
+                  <hr>
+              </div>
+              {% set i = 1 + i %}
+              {% set all = all + s + " "%}
+
+              {% if i == test.sentences|length + 1 %}
+              <!-- all sentences combined -->
+              <div class="testBox" id="testBox{{i}}">
+                  <button type="button" onclick="testActivated({{i}})">Test</button> 
+                  <button type="button" onclick="playAudio({{i}})">Audio</button> 
+                  <div id="gap{{i}}"></div>
+                 <!-- <p id="sentence1">We were hunters and foragers, </p> -->
+                  <p class = "sentence" id="sentence{{i}}">{{all}}</p> 
+                  <div id="correct{{i}}" class="correctDiv" style="display: none;"><img class="correct" src="../giphy.gif" loop=1></div>
+                  <hr>
+              </div>
+              <div id = "numTests" style = "display:none">{{i}}</div>
+              {% endif %}
+
+            {% endfor %}
+
+            
+            
+            <div id="info" >
+                    <p id="info_start">
+                      Click on the Test icon and begin speaking.
+                    </p>
+                    <p id="info_speak_now" style="display:none">
+                      Speak now.
+                    </p>
+                    <p id="info_no_speech" style="display:none">
+                      No speech was detected. You may need to adjust your <a href=
+                      "//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">microphone
+                      settings</a>.
+                    </p>
+                    <p id="info_no_microphone" style="display:none">
+                      No microphone was found. Ensure that a microphone is installed and that
+                      <a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
+                      microphone settings</a> are configured correctly.
+                    </p>
+                    <p id="info_allow" style="display:none">
+                      Click the "Allow" button above to enable your microphone.
+                    </p>
+                    <p id="info_denied" style="display:none">
+                      Permission to use microphone was denied.
+                    </p>
+                    <p id="info_blocked" style="display:none">
+                      Permission to use microphone is blocked. To change, go to
+                      chrome://settings/contentExceptions#media-stream
+                    </p>
+                    <p id="info_upgrade" style="display:none">
+                      Web Speech API is not supported by this browser. Upgrade to <a href=
+                      "//www.google.com/chrome">Chrome</a> version 25 or later.
+                    </p>
+
+            </div>
+            <!-- GO TO TEST -->
+              <style type="text/css">
+                  #goToTest {
+                  border-radius: 25px;
+                  background: black;
+                  padding: 2px; 
+                  width: 30%;
+                  height: auto; 
+                  margin: 12px;
+                  color: white;
+                  font-size: 22px;
+                  }
+                  
+              </style> 
+              <div id="goToTest">
+                Go to test
+              </div>
+            <div id="results" style="display: none;">
+                <span class="final" id="final_span"></span> <span class="interim" id=
+                    "interim_span"></span>
+              </div>
+
+              <canvas id="meter" width="500" height="50"></canvas>
+              <div class="compact marquee" id="div_language" style="display: none;">
+                  <select id="select_language" onchange="updateCountry()">
+                      </select>&nbsp;&nbsp; <select id="select_dialect">
+                </select>
+              </div>
+
+            </div>
+            
+
+            <script type="text/javascript" src="/allScripts.js"></script>
+            <!-- jQuery -->
+            <script src="../jquery.js"></script>
+            <script src="../jquery-ui.js"></script>
+            <!-- Volume detection -->
+            <script src="../volume2.js"></script>
+            <script src="../volume.js"></script>
+
+            <link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;subset=latin" rel=
+              "stylesheet">
+            <!--<link href="chrome.min.css" rel="stylesheet">-->
+            <script src="../chrome.min.js"></script>
+            <script type="text/javascript">
+                $(".testBox").hide();
+            </script>
+            
+            
+            </center>
+        </div>
+    </div>
+
+
+
+    <!-- Footer
+  /$$$$$$                      /$$                        
+ /$$__  $$                    | $$                        
+| $$  \__//$$$$$$   /$$$$$$  /$$$$$$    /$$$$$$   /$$$$$$ 
+| $$$$   /$$__  $$ /$$__  $$|_  $$_/   /$$__  $$ /$$__  $$
+| $$_/  | $$  \ $$| $$  \ $$  | $$    | $$$$$$$$| $$  \__/
+| $$    | $$  | $$| $$  | $$  | $$ /$$| $$_____/| $$      
+| $$    |  $$$$$$/|  $$$$$$/  |  $$$$/|  $$$$$$$| $$      
+|__/     \______/  \______/    \___/   \_______/|__/      
+                                                          
+                                                          
+                                                          -->
+
+
+    <hr>
+
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">Copyright &copy; Your Website 2014</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="../jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../clean-blog.min.js"></script>
+
+</body>
+
+</html>

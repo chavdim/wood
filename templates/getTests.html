@@ -1,0 +1,55 @@
+<style type="text/css">
+    .test {
+    border-radius: 25px;
+    background: grey;
+    padding: 20px; 
+    width: 90%;
+    height: 150px; 
+    margin: 10px;
+    }
+    .test-rank {
+    font-size: 30px;
+    }
+</style>                                                                    
+<div id="userInfo" style="display: none;">
+    <div id="userScores"></div>
+</div>
+
+<div id="testContainer" class="container-fluid"  >
+    <div id="refreshTests">
+    <script type="text/javascript">
+    function clicked () {
+        $.get( "../getTests", 
+            function( data ) {
+              $( "#testContainer" ).html( data );
+              //console.log("hi")
+            }
+        );
+
+    }
+    </script>
+    <input type="button" value="Refresh" onclick="clicked()">
+
+    </div>
+
+  <h1>Tests</h1>
+    {% for test in tests %}
+    <div class="test">
+       
+        <a href="/test/{{test.key().id()}}">
+             <span class="test-rank">{{test.rank}}  </span>   
+             <span class="test-title">{{test.title}}</span>
+        </a>
+        
+        <hr>
+        <div class="test-sentences">
+            {% for i in test.sentences %}
+                <!--<div class="test-sentence">{{i}}</div>-->
+            {% endfor %}
+        </div>
+
+    </div>
+    {% endfor %}
+  
+   
+</div>    

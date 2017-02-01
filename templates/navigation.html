@@ -1,0 +1,112 @@
+<!-- Navigation 
+                                /$$                       /$$     /$$                    
+                               |__/                      | $$    |__/                    
+ /$$$$$$$   /$$$$$$  /$$    /$$ /$$  /$$$$$$   /$$$$$$  /$$$$$$   /$$  /$$$$$$  /$$$$$$$ 
+| $$__  $$ |____  $$|  $$  /$$/| $$ /$$__  $$ |____  $$|_  $$_/  | $$ /$$__  $$| $$__  $$
+| $$  \ $$  /$$$$$$$ \  $$/$$/ | $$| $$  \ $$  /$$$$$$$  | $$    | $$| $$  \ $$| $$  \ $$
+| $$  | $$ /$$__  $$  \  $$$/  | $$| $$  | $$ /$$__  $$  | $$ /$$| $$| $$  | $$| $$  | $$
+| $$  | $$|  $$$$$$$   \  $/   | $$|  $$$$$$$|  $$$$$$$  |  $$$$/| $$|  $$$$$$/| $$  | $$
+|__/  |__/ \_______/    \_/    |__/ \____  $$ \_______/   \___/  |__/ \______/ |__/  |__/
+                                    /$$  \ $$                                            
+                                   |  $$$$$$/                                            
+                                    \______/                                            
+-->
+<style type="text/css">
+    @font-face {
+      font-family: fontTwo;
+      src: url(../font2.ttf);
+    }
+    #myBrand{
+        font-size: 32px; 
+        color:white;
+    }
+    #userLink{
+        color:#ffff99;
+    }
+    #myTests{
+        color:white;
+    }
+    #profile{
+        color:white;
+    }
+    #login{
+        color:white;
+    }
+    #myTests:hover{
+        color:#99ccff;
+    }
+    #profile:hover{
+        color:#99ccff;
+    }
+    #login:hover{
+        color:#99ccff;
+    }
+    div{
+      font-family: fontTwo;
+    }
+    #navbar{
+       /* background-color: #8600b3;*/
+       background-color:#3399ff;
+    }
+
+</style> 
+    <nav class="navbar navbar-default navbar-fixed-top" style="margin-bottom: 0px;" id="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header" >
+                <a id="myBrand" class="navbar-brand" href="/">nativegap</a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a id="myTests" href="/tests">テスト</a>
+                    </li>
+                    <li >
+                        <a id = "profile" href="/profile/{{user}}">プロフィール</a>
+                    </li>
+                    <!--<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>-->
+                    <!--<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>-->
+                    <li id="user">
+                    </li>
+                    <li>
+                        <a id = "login" href="/login">ログイン</a>
+                    </li>
+                    <!--
+                    <li id = "logout">
+                        <a href="/">ログアウト</a>
+                    </li>
+                    -->
+                    <script type="text/javascript">
+                        var c = getCookie("username")
+                        if (c) {
+                            $("#user").append( '<a id="userLink" href="/profile/{{user}}">{{user}}</a>' )
+                            $("#profile").remove()
+                            $("#login").remove()
+                        }
+                        else{
+                           
+                        }
+                    </script>
+                </ul>
+            </div>
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-color:black;margin:0px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+                </div>
+            </div>
+        </div>
+    </header>

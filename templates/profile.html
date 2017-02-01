@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<!-- ascii art created by
+    http://patorjk.com/software/taag/#p=display&f=Big%20Money-ne&t=navigation
+-->
+<html lang="en">
+
+<head>
+    <!-- scrips -->
+    <script src="../jquery.js"></script>
+    <script src="../jquery-ui.js"></script>
+    <script src="../chart.js"></script>
+    <script src="../util.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bootstrap.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="../clean-blog.min.js"></script>
+   
+    <script src="../progressbar.js"></script>
+    <script src="../myChartAndProgress.js"></script>
+    <!-- NOT SURE IF NEEDED
+    <script src="../chrome.min.js"></script>
+    -->
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../css/clean-blog.css" rel="stylesheet">
+    <!-- Custom Fonts 
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;subset=latin" rel=
+    "stylesheet">
+    -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>NativeGap tests</title>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="../https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="../https://oss.maxcdn.com/libs/respond.1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-84116401-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+</head>
+
+<body>
+<!-- Navigation 
+                                /$$                       /$$     /$$                    
+                               |__/                      | $$    |__/                    
+ /$$$$$$$   /$$$$$$  /$$    /$$ /$$  /$$$$$$   /$$$$$$  /$$$$$$   /$$  /$$$$$$  /$$$$$$$ 
+| $$__  $$ |____  $$|  $$  /$$/| $$ /$$__  $$ |____  $$|_  $$_/  | $$ /$$__  $$| $$__  $$
+| $$  \ $$  /$$$$$$$ \  $$/$$/ | $$| $$  \ $$  /$$$$$$$  | $$    | $$| $$  \ $$| $$  \ $$
+| $$  | $$ /$$__  $$  \  $$$/  | $$| $$  | $$ /$$__  $$  | $$ /$$| $$| $$  | $$| $$  | $$
+| $$  | $$|  $$$$$$$   \  $/   | $$|  $$$$$$$|  $$$$$$$  |  $$$$/| $$|  $$$$$$/| $$  | $$
+|__/  |__/ \_______/    \_/    |__/ \____  $$ \_______/   \___/  |__/ \______/ |__/  |__/
+                                    /$$  \ $$                                            
+                                   |  $$$$$$/                                            
+                                    \______/                                            
+-->
+<div id="navigation"></div>
+<script type="text/javascript">
+    $("#navigation").load("../navigation");
+</script>
+<!-- Main Content
+                                /$$                           /$$    
+                                | $$                          | $$    
+  /$$$$$$$  /$$$$$$  /$$$$$$$  /$$$$$$    /$$$$$$  /$$$$$$$  /$$$$$$  
+ /$$_____/ /$$__  $$| $$__  $$|_  $$_/   /$$__  $$| $$__  $$|_  $$_/  
+| $$      | $$  \ $$| $$  \ $$  | $$    | $$$$$$$$| $$  \ $$  | $$    
+| $$      | $$  | $$| $$  | $$  | $$ /$$| $$_____/| $$  | $$  | $$ /$$
+|  $$$$$$$|  $$$$$$/| $$  | $$  |  $$$$/|  $$$$$$$| $$  | $$  |  $$$$/
+ \_______/ \______/ |__/  |__/   \___/   \_______/|__/  |__/   \___/  
+-->
+
+<div id="content">                                                           
+    <div id="userInfo" style="display: none;">
+        <div id="userScores">{{user.scores}}</div>
+        <div id="userScoresDict">{{user.scoresDict}}</div>
+    </div>
+    <div class="container-fluid" >
+      <h1>{{user.username}}</h1>
+      <hr>
+        <div class="row" >
+            <div class="col-sm-8" style="background-color:white;height:90%;">
+                 <div style="width:100%;height:30%;background-color:white;margin:6px;">
+
+                    <div id="rank"><center>{{user.rank}}</center> </div>
+                    
+                     <!-- PROGRESS BAR -->
+                     <div id="containerNew"></div>
+                     <script type="text/javascript">
+                     expNeeded = {
+                        "D":0,
+                        "C":60,
+                        "B":300,
+                        "A":1100
+                     }
+                     expPerRank = {
+                        "D":10,
+                        "C":30,
+                        "B":80,
+                        "A":200
+                     }
+                     var currentRank = $("#rank").text()
+                     currentRank=currentRank[0]
+                     if (currentRank == "D") {
+                        var nextRank = "C"
+                     }; 
+                     if (currentRank == "C") {
+                        var nextRank = "B"
+                     };
+                     if (currentRank == "B") {
+                        var nextRank = "A"
+                     };
+                     if (currentRank == "A") {
+                        
+                        var nextRank = "A"
+                     };
+                     var ExpBar = new ProgressBar.Line(containerNew, {
+                       strokeWidth: 4,
+                       easing: 'easeInOut',
+                       duration: 1400,
+                       color: '#FFEA82',
+                       trailColor: '#eee',
+                       trailWidth: 0.001,
+                       svgStyle: {width: '100%', height: '100%'}
+                     });
+                     var exp = {{user.experience}}/expNeeded[nextRank] 
+                     ExpBar.animate(exp)
+                     </script>
+                 </div>
+                 <div style="width:100%;height:30%;background-color:pink;margin:6px;display:none;">
+                    Badges
+                 </div>
+                <!-- CHART-->
+                <div style="width:100%;height:65%;background-color:white;margin:6px;">
+                    <style>
+                    canvas {
+                        -moz-user-select: none;
+                        -webkit-user-select: none;
+                        -ms-user-select: none;
+                    }
+                    </style>
+                   
+                    <canvas id="chartCanvas"></canvas>
+                    <!--
+                    <button id="randomizeData">Randomize Data</button>
+                    <button id="addDataset">Add Dataset</button>
+                    -->
+                </div>
+            </div>
+            <div class="col-sm-4" style="background-color:white;height:100%;">
+                recommend* to do
+                <style type="text/css">
+                    #content{
+                        position: relative;
+                        top: 16vh;
+                    }
+                    #footer{
+                        position: relative;
+                        top: 16vh;
+                    }
+                    #rank{
+                    border-radius: 10px;
+                    font-size: 52px; 
+                    color:white;
+                    margin: 10px;
+                    background-color: rgb(26, 144, 255);
+                    padding:18px;
+                    width: 100px;
+                    height: 100px;
+                    }
+                    .test{
+                    border-radius: 10px;
+                    /*background:  rgb(100,200,200);*/
+                    background: #66b3ff;
+                    padding: 6px; 
+                    width: 90%;
+                    height: 75px; 
+                    margin: 10px;
+                    min-width: 280px;
+                    }
+                    .userscore {
+                    position: relative;
+                    float: right;
+                    top:-40px;
+                    right: 10px
+                    }
+                    .test-rankNone {
+                            border-radius: 10px;
+                            font-size: 38px;
+                            color: white;
+                            background-color: rgb(153, 206, 255);
+                            width: 50px;
+                            height: 50px;
+                            position: relative;
+                            float: left;
+                            margin-right: 6px;
+                            }
+                            .test-rankA {
+                            border-radius: 10px;
+                            font-size: 38px;
+                            color: white;
+                            background:  rgb(0, 92, 179);
+                            width: 50px;
+                            height: 50px;
+                            position: relative;
+                            float: left;
+                            margin-right: 6px;
+                            }
+                            .test-rankB {
+                            border-radius: 10px;
+                            font-size: 38px;
+                            color: white;
+                            background: rgb(26, 144, 255);
+                            width: 50px;
+                            height: 50px;
+                            position: relative;
+                            float: left;
+                            margin-right: 6px;
+                            }
+                            .test-rankC {
+                            border-radius: 10px;
+                            font-size: 38px;
+                            color: white;
+                            background:  rgb(77, 169, 255);
+                            width: 50px;
+                            height: 50px;
+                            position: relative;
+                            float: left;
+                            margin-right: 6px;
+                            }
+                            .test-rankD {
+                            border-radius: 10px;
+                            font-size: 38px;
+                            color: white;
+                            background:  rgb(128, 193, 255);
+                            width: 50px;
+                            height: 50px;
+                            position: relative;
+                            float: left;
+                            margin-right: 6px;
+                            }
+                    /*
+                    .test-title {
+                    font-size: 18px;
+                    position: relative;
+                    top: -36px;
+                    right: 22px;
+                    }
+                    .testType {
+                    font-size: 12px;
+                    position: relative;
+                    top: -58px;
+                    right: -56px;
+                    }
+                    .testLink {
+                    border-radius: 10px;
+                    background: white;
+                    padding: 6px; 
+                    min-width: 180px;
+                    width: 100%;
+                    height: 100%; 
+                    margin: 0px;
+                    }
+                    */
+                    .test-title {
+                    font-size: 18px;
+                    position: relative;
+                    margin: 4px;
+                    }
+                    .testType {
+                    font-size: 12px;
+                    position: relative;
+                    margin: 4px;
+                    }
+                    .testLink {
+                    border-radius: 10px;
+                    background: white;
+                    padding: 6px; 
+                    min-width: 180px;
+                    width: 100%;
+                    height: 100%; 
+                    margin: 0px;
+                    }
+                </style> 
+                <script type="text/javascript">
+                    scores = $("#userScoresDict").html();
+                    console.log(scores)
+                    scores = $.parseJSON(scores)
+                    
+                    cleanScores = [];
+                    userDoneTestIds = [];
+                    for (var key in scores) {
+                        cleanScores.push( scores[key] ) 
+                        userDoneTestIds.push(key)
+                    };
+                    //console.log(userDoneTestIds,cleanScores)
+                    
+                </script>
+                {% for test in tests %}
+                <div class="test" >
+                    <!--
+                    <script type="text/javascript">
+                    function clickedTest (n) {
+                        $.get( "../getTest/"+n, 
+                            function( data ) {
+                              $( "#content" ).html( data );
+                              //console.log("hi")
+                            }
+                        );
+                    }
+                    </script>
+                    <input type="button" value="Click me" onclick="clickedTest({{test.key().id()}})">
+                    -->
+                    <div class="testLink" id="{{test.key().id()}}">
+                        <a href="/test/{{test.key().id()}}">
+                         <div class="test-rank{{test.rankString}}" id="rank{{test.rankString}}">
+                            <center>{{test.rankString}}</center>
+                         </div>   
+                         <div class="testType">種類： {{test.contentType}}</div>
+                         <div class="test-title"> {{test.title}}</div>
+                        </a>
+                    </div>
+                    <div id="testId" style="display: none;">{{test.key().id()}}</div>
+                    <!-- script to display scores on tests that have been done -->
+                    <script type="text/javascript">
+                        for (var i = userDoneTestIds.length - 1; i >= 0; i--) {
+                            //console.log("hi")
+                            //console.log($("#testId").html() , userDoneTestIds[i])
+                            if ($("#testId").html() == userDoneTestIds[i]) {
+                               // console.log("match")
+                               $("#"+userDoneTestIds[i]).append( "<div class='userscore'>"+cleanScores[i]+"点"+"</div>" );
+                            };
+                        };
+                        $("#testId").remove()
+                    </script>
+                    <!-- add Difficulty colors -->
+
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>    
+</div> 
+
+    
+
+
+<!-- Footer
+  /$$$$$$                      /$$                        
+ /$$__  $$                    | $$                        
+| $$  \__//$$$$$$   /$$$$$$  /$$$$$$    /$$$$$$   /$$$$$$ 
+| $$$$   /$$__  $$ /$$__  $$|_  $$_/   /$$__  $$ /$$__  $$
+| $$_/  | $$  \ $$| $$  \ $$  | $$    | $$$$$$$$| $$  \__/
+| $$    | $$  | $$| $$  | $$  | $$ /$$| $$_____/| $$      
+| $$    |  $$$$$$/|  $$$$$$/  |  $$$$/|  $$$$$$$| $$      
+|__/     \______/  \______/    \___/   \_______/|__/      
+ -->
+<div id="footer"></div>
+<script type="text/javascript">
+    $("#footer").load("../footer");
+</script>
+
+
+
+   <script type="text/javascript">
+    $(".test").on('mouseenter', function(){
+       // $(this).animate({  width: "+=0", height: "+=20" },40);
+    });
+    $(".test").on('mouseleave', function(){
+        //$(this).animate({  width: "-=0", height: "-=20" },40);
+    });
+    /*
+    $(".test").on('mouseleave', function(){
+        $(this).animate({ margin: 0, width: "-=20", height: "-=20" });
+    })​;
+*/
+    </script>
+    
+
+</body>
+
+</html>
