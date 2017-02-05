@@ -51,12 +51,31 @@
     <style type="text/css">
         #navDiv{
             height: 12vh;
-            background-color: grey;
+            background-color: #000080;
+            color: white;
+        }
+        #logo{
+            font-size: 46px;
+            color: white;
+            margin-left: 20px;
+            float: left;
+        }
+        #topNavLinks{
+            float: right;
+            margin-right: 20px;
+        }
+        .topNavButtonSpan{
+            color: white;
         }
         #sideNav{
-            background-color: pink;
+            background-color:  white;
             height:100vh;
+            text-align: center;
+            border-right: 2px solid black;
         }
+
+
+
         .approved_item{
             border-bottom: 1px solid grey;
             margin: 4px;
@@ -74,7 +93,7 @@
             margin-right: 12px;
         }
         body{
-            height:100%; /* force the BODY element to match the height of the HTML element */
+            background-color: #f9f9f9;
         }
         textarea{
             width: 95%;
@@ -83,12 +102,15 @@
     <!-- Navigation -->
     <nav >
         <div id = "navDiv">
-            <ul >
-                <li>
-                    <a href="index.html">Home</a> <a href="about.html">About</a>  <a href="contact.html">Contact</a>
-                </li>
+
+            <div id="logo">WOOD</div>
+            <div id="topNavLinks">
                 
-            </ul>
+                <a href="index.html"><span class="topNavButtonSpan">Home</span></a> 
+                <a href="about.html"><span class="topNavButtonSpan">About</span></a>  
+                <a href="contact.html"><span class="topNavButtonSpan">Contact</span></a>
+                  
+            </div>
         </div>
     </nav>
     
@@ -139,19 +161,20 @@
                 <div class="post-preview">
                     
                     <form method="post" id="form1{{buyer.key().id()}}">   
-                    <span>{{buyer.username}}</span>                
+                    <span>{{buyer.username}}</span>  <div>Email:</div> 
+                    <!--             
                         <input type="hidden" name="name" value ="{{buyer.username}}">
                         <input type="text" name="comment" value ="{{buyer.comment}}">
                         <input type="hidden" name="user_id" style="" value ="{{buyer.key().id()}}">
                         <input class ="actionType" type="hidden" name="actionType" style="" value ="editing">
                         <input type="submit" value="Edit">
-                            <input type="button" value="Delete" onclick="deleting({{buyer.key().id()}})">
+                           <input type="button" value="Delete" onclick="deleting({{buyer.key().id()}})">-->
                         
                     </form>
 
                    
                 </div>
-                
+                <hr>
                 {% endfor %}
             </div>
             <div class="col-sm-5 ">
@@ -160,73 +183,25 @@
                 <div class="post-preview">
                     
                     <form method="post" id="form1{{seller.key().id()}}">   
-                    <span>{{seller.username}}</span>                
-                        <input type="hidden" name="name" value ="{{seller.comment}}">
+                    <span>{{seller.username}}</span>   <div>Email:</div>
+                    <!--              
+                        <input type="hidden" name="name" value ="{{seller.username}}">
                         <input type="text" name="comment" value ="{{seller.comment}}">
                         <input type="hidden" name="user_id" style="" value ="{{seller.key().id()}}">
                         <input class ="actionType" type="hidden" name="actionType" style="" value ="editing">
                         <input type="submit" value="Edit">
-                            <input type="button" value="Delete" onclick="deleting({{seller.key().id()}})">
+                           <input type="button" value="Delete" onclick="deleting({{seller.key().id()}})">-->
                         
                     </form>
 
                    
                 </div>
-                
+                <hr>
                 {% endfor %}
             </div>
 
         </div>
-        <hr>
-        <!--
-        <div class="row">
-            <div class="col-sm-4 ">
-            	<h1>Offers:</h1>
-                {% for offer in offers %}
-                <div class="post-preview">
-                	
-                	<a href="/{{offer.key().id()}}"><div>By: {{offer.seller_id}} {{offer.item_name}} size: {{offer.item_cubics}} price: {{offer.item_price}} comment:{{offer.comment}}</div></a>
-         
-                </div>
-                <hr>
-                {% endfor %}
-
-            </div>
-            <div class="col-sm-4 ">
-                <h1>Requests:</h1>
-                {% for req in requests %}
-                <div class="post-preview">
-                    
-                    <a href="/{{req.key().id()}}"><div>>By: {{req.requester_id}} name: {{req.username}} comment: {{req.comment}}</div></a>
-            
-                </div>
-                <hr>
-                {% endfor %}
-
-            </div>
-            <div class="col-sm-4 ">
-                <h1>Sellers:</h1>
-                {% for seller in sellers %}
-                <div class="post-preview">
-                    
-                    <a href="/{{seller.key().id()}}"><div>name: {{seller.username}} comment: {{seller.comment}}</div></a>
-                
-                </div>
-                <hr>
-                {% endfor %}
-                <h1>Buyers:</h1>
-                {% for buyer in buyers %}
-                <div class="post-preview">
-                    
-                    <a href="/{{buyer.key().id()}}"><div>name: {{buyer.username}} comment: {{buyer.comment}}</div></a>
-                
-                </div>
-                <hr>
-                {% endfor %}
-
-            </div>
-        </div>
-        -->
+        
     </div>
 
     <hr>
