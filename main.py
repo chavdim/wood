@@ -167,7 +167,11 @@ class RequestPage(Handler):
             req = Request.addNew(item_name, item_cubics, item_price, comment, user,from_inventory=seller)
             req.put()
             # add requested_by in offering
-            offer.requested_by += user
+            if offer.requested_by=="":
+                
+                offer.requested_by +="Requested: " + user
+            else:
+                offer.requested_by  +=  " , " + user
             offer.put()
 
         self.redirect('/buyer')  
@@ -220,7 +224,54 @@ class BuyerPage(Handler):
             self.redirect('/request/'+str(req_id)  )
         else:
             self.redirect('/buyer')  
+class BuyerOrdersPage(Handler):
+    def render_main(self):  #,title="",post="",error="",creator="",new=True)
+        #articlesObj=db.GqlQuery("SELECT * FROM Article ORDER BY date DESC LIMIT 6" )
+        self.render("buyer_orders.html")#,user=user,events=events,articles=articles)
+    def get(self):
+        #self.write("hello")
+        #q=self.request.get("q")
+        #self.render_main()
+        user = self.request.cookies.get('username')
+        if user:
+            requests = db.GqlQuery(" select * from Request where requester_id = '"+user+"'")
+            self.render("buyer_orders.html",requests=requests)
+        else:
+            self.redirect('/login')  
+    def post(self):
+        user = self.request.cookies.get('username')
+        item_name = self.request.get('name')
+        item_cubics = self.request.get('cubics')
+        item_price = self.request.get('price')
+        comment = self.request.get('comment')
+        action_type = self.request.get('actionType')
 
+        if action_type == "adding":
+            if validOffer():
+                req = Request.addNew(item_name, item_cubics, item_price, comment, user)
+                req.put()
+
+        ## Edit
+        req_id = self.request.get('req_id')
+        
+
+        if action_type == "editing":
+            modified_req = Request.get_by_id(int(req_id))
+            modified_req.item_name = item_name
+            modified_req.item_price = item_price
+            modified_req.item_cubics = item_cubics
+            modified_req.comment = comment
+            modified_req.put()
+        if action_type == "deleting":
+            modified_req = Request.get_by_id(int(req_id))
+            modified_req.delete()
+
+        if action_type == "request":
+            
+
+            self.redirect('/request/'+str(req_id)  )
+        else:
+            self.redirect('/buyer')  
 class BuyerPage2(Handler):
     def render_main(self):  #,title="",post="",error="",creator="",new=True)
         #articlesObj=db.GqlQuery("SELECT * FROM Article ORDER BY date DESC LIMIT 6" )
@@ -564,7 +615,7 @@ class AddTestResult(Handler):
 ##########################################################
 
 app = webapp2.WSGIApplication([
-    ('/buyer', BuyerPage), ('/addoffer', AddOffer), ('/createuser', CreateUser),  ('/login', LogIn),
+    ('/buyer', BuyerPage), ('/buyerorders', BuyerOrdersPage),('/addoffer', AddOffer), ('/createuser', CreateUser),  ('/login', LogIn),
       ('/seller', SellerPage),  ('/admin', AdminScreen),   ('/adminusers', AdminUsersScreen),('/inventory/(\w+)', BuyerPage2),
         ('/request/(\d+)', RequestPage), ('/adminorders', AdminOrdersScreen)
 ], debug=True)

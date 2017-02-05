@@ -35,8 +35,7 @@
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    -->
-
+	-->
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -47,6 +46,7 @@
 </head>
 
 <body>
+
     <style type="text/css">
         #navDiv{
             height: 12vh;
@@ -74,24 +74,26 @@
             border-right: 2px solid black;
         }
 
-
-        .approved_item{
-            border: 1px solid grey;
+        .offer{
             background-color: white;
+            border: 1px solid grey;
             border-radius: 4px;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             margin: 10px;
             margin-bottom: 14px;
             padding: 4px;
         }
-        .pending_item{
-            border: 1px solid grey;
+        .order{
             background-color: white;
+            border: 1px solid grey;
             border-radius: 4px;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             margin: 10px;
             margin-bottom: 14px;
             padding: 4px;
+        }
+        .item_nameSpan{
+            font-size: 24px;
         }
         .seller_idDiv{
             
@@ -99,15 +101,10 @@
         .form-group{
             margin-bottom: 0px;
         }
-        .sendDeleteDiv{
-            float:right;
+        .requestDiv{
+            float:left;
             margin-bottom: 6px;
             margin-right: 12px;
-        }
-        .requested_byDiv{
-            color: green;
-            font-style: italic;
-            margin-left: 10px;
         }
         body{
             background-color: #f9f9f9;
@@ -116,154 +113,173 @@
             width: 95%;
         }
     </style>
-
-
     <!-- Navigation -->
-    <nav >
-        <div id = "navDiv">
+   <nav >
+       <div id = "navDiv">
 
-            <div id="logo">WOOD</div>
-            <div id="topNavLinks">
-                
-                <a href="index.html"><span class="topNavButtonSpan">Home</span></a> 
-                <a href="about.html"><span class="topNavButtonSpan">About</span></a>  
-                <a href="contact.html"><span class="topNavButtonSpan">Contact</span></a>
-                  
+           <div id="logo">WOOD</div>
+           <div id="topNavLinks">
+               
+               <a href="index.html"><span class="topNavButtonSpan">Home</span></a> 
+               <a href="about.html"><span class="topNavButtonSpan">About</span></a>  
+               <a href="contact.html"><span class="topNavButtonSpan">Contact</span></a>
+                 
+           </div>
+       </div>
+   </nav>
+    
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <!-- 
+    <header class="intro-header" style="background-image: url('img/home-bg.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1>Clean Blog</h1>
+                        <hr class="small">
+                        <span class="subheading">A Clean Blog Theme by Start Bootstrap</span>
+                    </div>
+                </div>
             </div>
         </div>
-    </nav>
-    
+    </header>
+	-->
+    <!-- Main Content -->
+    <!-- posts -->
+    <!-- posts -->
+    <!-- posts -->
+    <!-- posts -->
+    <!-- posts -->
+    <!-- posts -->
 
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-2 " id="sideNav">
+        		<h1>Menu</h1>
+        		<div><a href="/buyer">Inventory</a></div>
+        		<div><a href="/buyerorders">My orders</a></div>
+        		<div><a href="/messages">Messages?</a></div>
 
-                <h1>Menu</h1>
-                <div><a href="/admin">Inventory</a></div>
-                <div><a href="/adminorders">Orders</a></div>
-                <div><a href="/adminusers">Accounts</a></div>
-            </div>
+        	</div>
             <div class="col-sm-10 ">
-                <script type="text/javascript">
-                function deleting (item_id) {
-                    console.log(22)
-                    $(".actionType").val('deleting');
-                    $("#form1"+item_id).submit();
-                }
-                </script>
+            	<style type="text/css">
+            	.inventory_item_name{
+            		font-size: 32px;
+            	}
+            	</style>
+            	<script type="text/javascript">
+            	function deleting (item_id) {
+            	    console.log(22)
+            	    $(".actionType").val('deleting');
+            	    $("#form1"+item_id).submit();
+            	}
+            	</script>
+            
+                <h1>Place order:</h1>
 
-                <h1>New offers:</h1>
+                <div class="order">
+                    <form class="form-horizontal"  method="post"  id="form1">
+            
+                       
+                        <div class="form-group">
+                            
+                            <div class="col-sm-4">
+                                <input type="text" name="name" placeholder ="Item name">
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="text" name="cubics" style="width:90px;" placeholder ="Amount"> &#13221;
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="text" name="price" style="width:90px;" placeholder ="Price ">/ &#13221;
+                            </div>   
+                            <div class="col-sm-4"> 
+                                <textarea placeholder="Comment (optional)" rows="1" name="comment"></textarea>
+                            </div>    
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-0">
+                                <div class ="seller_idDiv">
+                                    
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class= "sendDeleteDiv">
+                                    <input class ="actionType" type="hidden" name="actionType" style="" value ="adding">
+                                    <input type="submit" value="Add">
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                    </form>
+                </div>
+
+                <h1>My orders:</h1>
                 
-                {% for pending_offer in pending_offers %}
+                {% for req in requests %}
                 <!--
                 <div class="row">
-                    
-                    <form method="post" id="form1{{pending_offer.key().id()}}">   
-                    <div>{{pending_offer.seller_id}}</div>                
-                        <input type="text" name="name" value ="{{pending_offer.item_name}}">
-                        <input type="text" name="cubics" style="width:90px;" value ="{{pending_offer.item_cubics}}">
-                        <input type="text" name="price" style="width:90px;" value ="{{pending_offer.item_price}}">
-                        <input type="textbox" name="comment" value ="{{pending_offer.comment}}">
-                        <input type="hidden" name="offer_id" style="" value ="{{pending_offer.key().id()}}">
-                        <input class ="actionType" type="hidden" name="actionType" style="" value ="approving">
-                        <input type="submit" value="Approve">
-                            <input type="button" value="Delete" onclick="deleting({{pending_offer.key().id()}})">
+                    <form method="post" id="form1{{req.key().id()}}">                 
+                        <input type="text" name="name" value ="{{req.item_name}}">
+                        <input type="text" name="cubics" style="width:60px;" value ="Amount {{req.item_cubics}}"> &#13221;
+                        <input type="text" name="price" style="width:60px;" value ="{{req.item_price}} ">/ &#13221;
+                        <input type="text" name="comment" value ="{{req.comment}}">
+                        <input class ="actionType" type="hidden" name="actionType" style="" value ="editing">
+                        <input  type="hidden" name="req_id" style="" value ="{{req.key().id()}}">
+                        <input type="submit" value="Save changes">
+                        	<input type="button" value="Delete" onclick="deleting({{req.key().id()}})">
+                           
                         
                     </form>
-
-                   
                 </div>
                 -->
-
-                <div class="pending_item">
-                    <form class="form-horizontal"  method="post"  id="form1{{pending_offer.key().id()}}">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class ="seller_idDiv">
-                                    seller: {{pending_offer.seller_id}}
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class= "sendDeleteDiv">
-                                    <input type="hidden" name="offer_id" style="" value ="{{pending_offer.key().id()}}">
-                                    <input class ="actionType" type="hidden" name="actionType" style="" value ="approving">
-                                    <input type="submit" value="Approve">
-                                        <input type="button" value="Delete" onclick="deleting({{pending_offer.key().id()}})">
-                                </div>
-                            </div>
-                            
-                        </div>
-                       
-                        <div class="form-group">
-                            
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" name="name" placeholder="item name" value ="{{pending_offer.item_name}}"/>
-                            </div>
-                            <div class="col-sm-2">
-                                <input type="text" class="form-control" name="cubics" placeholder="cubics" value ="{{pending_offer.item_cubics}} &#13221;"/>
-                            </div>
-                            <div class="col-sm-2">
-                                <input type="text" class="form-control" name="price"  placeholder="price" value ="{{pending_offer.item_price}} $/&#13221;"/>
-                            </div>   
-                            <div class="col-sm-4"> 
-                                <textarea placeholder="Comment (optional)" rows="1" name="comment">{{pending_offer.comment}}</textarea>
-                            </div>
-                            
-                        </div>
-                        
-                    </form>
-                </div>
-                {% endfor %}
-
-                <h1>Posted offers:</h1>
-                {% for approved_offer in approved_offers %}
-                <div class="approved_item">
-                    <form class="form-horizontal"  method="post"  id="form1{{approved_offer.key().id()}}">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class ="seller_idDiv">
-                                    seller: {{approved_offer.seller_id}}
-
-                                    <div class="requested_byDiv">{{approved_offer.requested_by}}</div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class= "sendDeleteDiv">
-                                    <input type="hidden" name="offer_id" style="" value ="{{approved_offer.key().id()}}">
-                                    <input class ="actionType" type="hidden" name="actionType" style="" value ="editing">
-                                    <input type="submit" value="Save">
-                                        <input type="button" value="Delete" onclick="deleting({{approved_offer.key().id()}})">
-                                </div>
-                            </div>
-                            
-                        </div>
-                       
-                        <div class="form-group">
-                            
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" name="name" placeholder="item name" value ="{{approved_offer.item_name}}"/>
-                            </div>
-                            <div class="col-sm-2">
-                                <input type="text" class="form-control" name="cubics" placeholder="cubics" value ="{{approved_offer.item_cubics}} &#13221;"/>
-                            </div>
-                            <div class="col-sm-2">
-                                <input type="text" class="form-control" name="price"  placeholder="price" value ="{{approved_offer.item_price}} $/&#13221;"/>
-                            </div>   
-                            <div class="col-sm-4"> 
-                                <textarea placeholder="Comment (optional)" rows="1" name="comment">{{approved_offer.comment}}</textarea>
-                            </div>
-                            
-                        </div>
-                        
-                    </form>
-                </div>
+                <div class="order">
+                    <form class="form-horizontal"  method="post"  id="form1">
                 
+                       
+                        <div class="form-group">
+                            
+                            <div class="col-sm-4">
+                                <!--<input type="text" class="form-control" name="name" placeholder="item name" value ="{{req.item_name}}"/>--><span class="item_nameSpan">{{req.item_name}}</span>
+                            </div>
+                            <div class="col-sm-2">
+                                <!--<input type="text" class="form-control" name="cubics" placeholder="cubics" value ="{{req.item_cubics}} &#13221;"/>-->{{req.item_cubics}} &#13221;
+                            </div>
+                            <div class="col-sm-2">
+                                <!--<input type="text" class="form-control" name="price"  placeholder="price" value ="{{req.item_price}} $/&#13221;"/>-->{{req.item_price}} $/&#13221;
+                            </div>   
+                            <div class="col-sm-4"> 
+                                <!--<textarea placeholder="Comment (optional)" rows="1" name="comment">{{req.comment}}</textarea>
+                            -->{{req.comment}}
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+                            
+                            <div class="col-sm-12">
+                                <div class= "requestDiv">
+                                    <!--<input class ="actionType" type="hidden" name="actionType" style="" value ="approving">
+                                    <input type="submit" value="Approve">
+                                        <input type="button" value="Delete" onclick="deleting({{req.key().id()}})">
+                                        -->
+                                    <input class ="actionType" type="hidden" name="actionType" style="" value ="editing">
+                                    <input  type="hidden" name="req_id" style="" value ="{{req.key().id()}}">
+                                    <input type="submit" value="Save changes">
+                                        <input type="button" value="Delete" onclick="deleting({{req.key().id()}})">
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                    </form>
+                </div>
                 {% endfor %}
-            </div>
 
+            </div>
         </div>
-        
-        
     </div>
 
     <hr>
@@ -304,12 +320,10 @@
             </div>
         </div>
     </footer>
-
     <script type="text/javascript">
         var h = $( document ).height();
         $( "#sideNav" ).height(h);
     </script>
-
 
 </body>
 
