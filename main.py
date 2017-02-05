@@ -101,16 +101,18 @@ class Offering(db.Model):
     seller_id = db.StringProperty()     #make required
     comment = db.TextProperty()
     item_image=db.BlobProperty()
+    requested_by = db.StringProperty() 
     #aproved or not
     status = db.StringProperty(required=True)
     @classmethod
-    def addNew(cls, name, cubics, price, comment, user_id,status="pending"):
+    def addNew(cls, name, cubics, price, comment, user_id,status="pending",requested_by=""):
         return Offering(item_name = name,
                     item_cubics = cubics,
                     item_price = price,
                     comment = comment,
                     seller_id = user_id,
-                    status=status
+                    status=status,
+                    requested_by=requested_by
                     )
 
 class Request(db.Model):
@@ -164,6 +166,9 @@ class RequestPage(Handler):
         if validOffer():
             req = Request.addNew(item_name, item_cubics, item_price, comment, user,from_inventory=seller)
             req.put()
+            # add requested_by in offering
+            offer.requested_by += user
+            offer.put()
 
         self.redirect('/buyer')  
 class BuyerPage(Handler):

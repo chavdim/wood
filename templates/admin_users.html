@@ -48,45 +48,50 @@
 
 <body>
 
+    <style type="text/css">
+        #navDiv{
+            height: 12vh;
+            background-color: grey;
+        }
+        #sideNav{
+            background-color: pink;
+            height:100vh;
+        }
+        .approved_item{
+            border-bottom: 1px solid grey;
+            margin: 4px;
+            padding: 4px;
+        }
+        .seller_idDiv{
+            
+        }
+        .form-group{
+            margin-bottom: 0px;
+        }
+        .sendDeleteDiv{
+            float:right;
+            margin-bottom: 6px;
+            margin-right: 12px;
+        }
+        body{
+            height:100%; /* force the BODY element to match the height of the HTML element */
+        }
+        textarea{
+            width: 95%;
+        }
+    </style>
     <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">Start Bootstrap</a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="index.html">Home</a>
-                    </li>
-                    <li>
-                        <a href="about.html">About</a>
-                    </li>
-                    <li>
-                        <a href="sample.html">Sample</a>
-                    </li>
-                    <li>
-                        <a href="post.html">Sample Post</a>
-                    </li>
-                    <li>
-                        <a href="contact.html">Contact</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+    <nav >
+        <div id = "navDiv">
+            <ul >
+                <li>
+                    <a href="index.html">Home</a> <a href="about.html">About</a>  <a href="contact.html">Contact</a>
+                </li>
+                
+            </ul>
         </div>
-        <!-- /.container -->
-        <hr>
     </nav>
+    
 
     <!-- Page Header -->
     <!-- Set your background image for this header on the line below. -->
@@ -113,9 +118,9 @@
     <!-- posts -->
     <!-- posts -->
 
-    <div class="container" style="margin-top:60px;">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-2 ">
+            <div class="col-sm-2 " id="sideNav">
                 <h1>Menu</h1>
                 <div><a href="/admin">Inventory</a></div>
                 <div><a href="/adminorders">Orders</a></div>
@@ -228,7 +233,7 @@
 
     <!-- Footer -->
     <footer>
-        <div class="container" style="position: absolute;bottom: 20px;">
+        <div class="container" style="position: relative;bottom: 20px;">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <ul class="list-inline text-center">
@@ -262,7 +267,10 @@
             </div>
         </div>
     </footer>
-
+    <script type="text/javascript">
+        var h = $( document ).height();
+        $( "#sideNav" ).height(h);
+    </script>
 
 </body>
 

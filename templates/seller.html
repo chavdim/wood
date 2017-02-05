@@ -47,45 +47,54 @@
 
 <body>
 
+    <style type="text/css">
+        #navDiv{
+            height: 12vh;
+            background-color: grey;
+        }
+        #sideNav{
+            background-color: pink;
+            height:100vh;
+        }
+        .approved_item{
+            border-bottom: 1px solid grey;
+            margin: 4px;
+            padding: 4px;
+        }
+        .seller_idDiv{
+            
+        }
+        .form-group{
+            margin-bottom: 0px;
+        }
+        .sendDeleteDiv{
+            float:right;
+            margin-bottom: 6px;
+            margin-right: 12px;
+        }
+        .addButton{
+            float: right;
+            margin-right: 26px;
+        }
+        body{
+            height:100%; /* force the BODY element to match the height of the HTML element */
+        }
+        textarea{
+            width: 95%;
+        }
+    </style>
     <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">Start Bootstrap</a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="index.html">Home</a>
-                    </li>
-                    <li>
-                        <a href="about.html">About</a>
-                    </li>
-                    <li>
-                        <a href="sample.html">Sample</a>
-                    </li>
-                    <li>
-                        <a href="post.html">Sample Post</a>
-                    </li>
-                    <li>
-                        <a href="contact.html">Contact</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+    <nav >
+        <div id = "navDiv">
+            <ul >
+                <li>
+                    <a href="index.html">Home</a> <a href="about.html">About</a>  <a href="contact.html">Contact</a>
+                </li>
+                
+            </ul>
         </div>
-        <!-- /.container -->
-        <hr>
     </nav>
+    
 
     <!-- Page Header -->
     <!-- Set your background image for this header on the line below. -->
@@ -112,10 +121,9 @@
     <!-- posts -->
     <!-- posts -->
 
-    <div class="container" style="margin-top:60px;">
-
+    <div class="container-fluid">
         <div class="row">
-        	<div class="col-sm-2 ">
+            <div class="col-sm-2 " id="sideNav">
         		<h1>Menu</h1>
         		<div><a href="/seller">My offers</a></div>
         		<div><a href="/adminusers">Messages?</a></div>
@@ -131,17 +139,31 @@
                 
                 
                 <div class="row">
-                    <form method="post" id="form1">                 
-                        <input type="text" name="name" placeholder ="Item name">
-                        <input type="text" name="cubics" style="width:90px;" placeholder ="Avaivable"> &#13221;
-                        <input type="text" name="price" style="width:90px;" placeholder="Price">/ &#13221;
-                        <input type="text" name="comment"  placeholder="Comment (optional)">
-                        <input class ="actionType" type="hidden" name="actionType" style="" value ="adding">
-                        <input type="submit" value="Add">
-                           
+
+                    <form class="form-horizontal"  method="post"  id="form1">
+                    <div class="form-group">
                         
+                        <div class="col-sm-4" id="form1" me>
+                            <input type="text" class="form-control" name="name" placeholder="item name" value =""/>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" name="cubics" placeholder="cubics" value ="&#13221;"/>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" name="price"  placeholder="price" value ="$/&#13221;"/>
+                        </div>   
+                        <div class="col-sm-4"> 
+                            <textarea placeholder="Comment (optional)" rows="1" name="comment"></textarea>
+                        </div>
+                        <div class="addButton"> 
+                            <input class ="actionType" type="hidden" name="actionType" style="" value ="adding">
+                            <input type="submit" value="Add">
+                        </div> 
+                        
+                    </div>
                     </form>
                 </div>
+
             	<h1>My offers:</h1>
                 {% for offer in offers %}
                 
@@ -167,7 +189,7 @@
 
     <!-- Footer -->
     <footer>
-        <div class="container" style="position: absolute;bottom: 20px;">
+        <div class="container" style="position: relative;bottom: 20px;">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <ul class="list-inline text-center">
@@ -201,7 +223,10 @@
             </div>
         </div>
     </footer>
-
+    <script type="text/javascript">
+        var h = $( document ).height();
+        $( "#sideNav" ).height(h);
+    </script>
 
 </body>
 
