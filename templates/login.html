@@ -144,7 +144,13 @@
            <div id = "loggedAsDiv">Logged as: </div>
            <script type="text/javascript">
                var username =   $.cookie("username")
-               $("#loggedAsDiv").text("Logged as: "+username)
+               if (username) {
+               	$("#loggedAsDiv").text("Logged in as: "+username)
+               }
+               else{
+               	$("#loggedAsDiv").text("Not logged in ")
+               }
+               
            </script>
        </div>
     </nav>
@@ -178,9 +184,25 @@
 
         <div class="row" style="margin-top:80px">
         	<center>
+        		<h2>Login</h2>
 		   	<form method="post" >
 		   	<label>Username:<input type="text" name="username" value="{{user}}"></label><br>
 		   	<label>Password:<input style="margin-left:5px;" type="password" name="password" value="{{pas}}"></label><br>
+		   	<input class ="actionType" type="hidden" name="actionType" style="" value ="login">
+		   	<input type="submit"></input>
+		   	</form>
+		   	</center>
+		</div>
+        <div class="row" style="margin-top:20px">
+
+        	<center>
+        		<h2>Change password</h2>
+		   	<form method="post" >
+		   	<label>Username: &nbsp; &nbsp; <input type="text" name="username" value="{{user}}"></label><br>
+		   	<label>Current pass:<input type="password" name="old_password" value="{{user}}"></label><br>
+		   	<label>New pass:&nbsp;&nbsp; &nbsp;&nbsp;<input style="margin-left:5px;" type="password" name="new_password1" value="{{pas}}"></label><br>
+		   	<label>Re enter:&nbsp; &nbsp; &nbsp;&nbsp;<input style="margin-left:5px;" type="password" name="new_password2" value="{{pas}}"></label><br>
+		   	<input class ="actionType" type="hidden" name="actionType" style="" value ="change">
 		   	<input type="submit"></input>
 		   	</form>
 		   	</center>

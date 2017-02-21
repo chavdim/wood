@@ -540,23 +540,47 @@ class LogIn(Handler):
         self.render("login.html")
     def post(self):
         username=self.request.get('username')
-        password=self.request.get('password')
-        if valid(username) and valid(password):
-            #u=db.GqlQuery("SELECT * FROM User WHERE username = 'myname' AND password = 'mypass'".replace("myname",username).replace("mypass",password))
-            u = User.login(username, password)
-            if u:
-                self.response.set_cookie('username', username)
-                self.response.set_cookie('token', generateToken(username))
-                if u.user_type == "buyer":
-                    self.redirect('/buyer')
-                if u.user_type == "seller":
-                    self.redirect('/seller')
-                if u.user_type == "admin":
-                    self.redirect('/admin')
+        action_type = self.request.get("actionType")
+
+        if action_type == "change" :
+            current_pass = self.request.get("old_password")
+            newp1 = self.request.get("new_password1")
+            newp2 = self.request.get("new_password2")
+            if newp1!=newp2:
+                self.render("login.html",user=username) #TODO add pass didnt math error message
             else:
-                self.render("login.html")
-        else:
-            self.render("login.html",user=username,pas=password)
+                if valid(username) and valid(current_pass):
+                    u = User.login(username, current_pass)
+                    if u:
+                        newp = make_pw_hash(newp1)
+                        u.password = newp
+                        u.put()
+                        self.response.set_cookie('username', username)
+                        self.response.set_cookie('token', generateToken(username))
+                        if u.user_type == "buyer":
+                            self.redirect('/buyer')
+                        if u.user_type == "seller":
+                            self.redirect('/seller')
+                        if u.user_type == "admin":
+                            self.redirect('/admin')
+        if action_type == "login":
+            password=self.request.get('password')
+            if valid(username) and valid(password):
+                #u=db.GqlQuery("SELECT * FROM User WHERE username = 'myname' AND password = 'mypass'".replace("myname",username).replace("mypass",password))
+                u = User.login(username, password)
+                if u:
+                    self.response.set_cookie('username', username)
+                    self.response.set_cookie('token', generateToken(username))
+                    if u.user_type == "buyer":
+                        self.redirect('/buyer')
+                    if u.user_type == "seller":
+                        self.redirect('/seller')
+                    if u.user_type == "admin":
+                        self.redirect('/admin')
+                else:
+                    self.render("login.html")
+            else:
+                self.render("login.html",user=username,pas=password)
 
 class ProfilePage(Handler):
     def get(self,name):   
