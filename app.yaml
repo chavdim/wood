@@ -26,7 +26,7 @@ handlers:
 # image files
 - url: /(.*\.(bmp|gif|ico|jpeg|jpg|png|svg))
   static_files: static/img/\1
-  upload: static/(.*\.(bmp|gif|ico|jpeg|jpg|png))
+  upload: static/(.*\.(bmp|gif|ico|jpeg|jpg|png|svg))
 
 - url: /(.*\.ico)
   mime_type: image/x-icon
