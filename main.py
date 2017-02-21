@@ -104,15 +104,26 @@ class Offering(db.Model):
     requested_by = db.StringProperty() 
     #aproved or not
     status = db.StringProperty(required=True)
+    item_name_original = db.StringProperty()
+    item_cubics_original = db.StringProperty()
+    item_price_original = db.StringProperty()
+    comment_original = db.TextProperty()
+    visible = db.StringProperty()
+    date = db.DateTimeProperty(auto_now=True, auto_now_add=True) 
     @classmethod
-    def addNew(cls, name, cubics, price, comment, user_id,status="pending",requested_by=""):
+    def addNew(cls, name, cubics, price, comment, user_id,status="pending",requested_by="",visible="yes"):
         return Offering(item_name = name,
                     item_cubics = cubics,
                     item_price = price,
                     comment = comment,
                     seller_id = user_id,
                     status=status,
-                    requested_by=requested_by
+                    requested_by=requested_by,
+                    item_name_original = name,
+                    item_cubics_original = cubics,
+                    item_price_original = price,
+                    comment_original = comment,
+                    visible = visible
                     )
 
 class Request(db.Model):
@@ -122,14 +133,26 @@ class Request(db.Model):
     comment = db.TextProperty()
     requester_id = db.StringProperty()   #make required
     from_inventory = db.StringProperty()
+    #
+    request_sent = db.StringProperty()  # username of seller to which order is sent
+    item_name_original = db.StringProperty()
+    item_cubics_original = db.StringProperty()
+    item_price_original = db.StringProperty()
+    comment_original = db.TextProperty()
+    date = db.DateTimeProperty(auto_now=True, auto_now_add=True) 
     @classmethod
-    def addNew(cls, name, cubics, price, comment, user_id,from_inventory="no"):
+    def addNew(cls, name, cubics, price, comment, user_id,from_inventory="no",request_sent=""):
         return Request(item_name = name,
                     item_cubics = cubics,
                     item_price = price,
                     comment = comment,
                     requester_id = user_id,
-                    from_inventory = from_inventory
+                    from_inventory = from_inventory,
+                    request_sent = request_sent,
+                    item_name_original = name,
+                    item_cubics_original = cubics,
+                    item_price_original = price,
+                    comment_original = comment
                     )
 
 
@@ -185,7 +208,7 @@ class BuyerPage(Handler):
         #self.render_main()
         user = self.request.cookies.get('username')
         if user:
-            offers=db.GqlQuery("select * from Offering  where status = 'approved' ")
+            offers=db.GqlQuery("select * from Offering  where status = 'approved' and visible = 'yes' ")
             requests = db.GqlQuery(" select * from Request where requester_id = '"+user+"'")
             self.render("buyer.html",offers=offers,requests=requests)
         else:
@@ -244,6 +267,7 @@ class BuyerOrdersPage(Handler):
         item_cubics = self.request.get('cubics')
         item_price = self.request.get('price')
         comment = self.request.get('comment')
+        #
         action_type = self.request.get('actionType')
 
         if action_type == "adding":
@@ -271,7 +295,7 @@ class BuyerOrdersPage(Handler):
 
             self.redirect('/request/'+str(req_id)  )
         else:
-            self.redirect('/buyer')  
+            self.redirect('/buyerorders')  
 class BuyerPage2(Handler):
     def render_main(self):  #,title="",post="",error="",creator="",new=True)
         #articlesObj=db.GqlQuery("SELECT * FROM Article ORDER BY date DESC LIMIT 6" )
@@ -297,26 +321,44 @@ class AdminOrdersScreen(Handler):
         #self.render_main()
 
         orders=db.GqlQuery("select * from Request ")
-        self.render("admin_orders.html",orders=orders)
+        sellers=db.GqlQuery("select * from User where user_type = 'seller' ")
+        self.render("admin_orders.html",orders=orders,sellers=sellers)
 
     def post(self):
         name = self.request.get('name')
+        price = self.request.get('price')
+        cubics = self.request.get('cubics')
         comment = self.request.get('comment')
         user_id = self.request.get('user_id')
         action_type = self.request.get('actionType')
 
         if action_type == "editing":
-            modified_user = User.get_by_id(int(user_id))
-            modified_user.username = name
-            modified_user.comment = comment
-            modified_user.put()
+            offer_id = self.request.get('offer_id')
+            modified_req = Request.get_by_id(int(offer_id))
+            modified_req.username = name
+            modified_req.comment = comment
+            modified_req.put()
         if action_type == "deleting":
-            modified_user = User.get_by_id(int(user_id))
-            modified_user.delete()
+            offer_id = self.request.get('offer_id')
+            modified_req = Request.get_by_id(int(offer_id))
+            modified_req.delete()
+
+        if action_type == "sending":
+            selected_seller = self.request.get('selected_seller')
+            offer_id = self.request.get('offer_id')
+
+            order = Request.get_by_id(int(offer_id))
+            order.request_sent = selected_seller
+            order.item_name = name
+            order.item_price = price
+            order.item_cubics = cubics
+            order.comment = comment
+            order.put()                             #TODO update order
+            
            
 
         user = self.request.cookies.get('username')
-        self.redirect('/adminusers')
+        self.redirect('/adminorders')
 
 class AdminUsersScreen(Handler):
     def render_main(self):  #,title="",post="",error="",creator="",new=True)
@@ -395,6 +437,21 @@ class AdminScreen(Handler):
         if action_type == "deleting":
             modified_offer = Offering.get_by_id(int(offer_id))
             modified_offer.delete()
+        if action_type == "visibility":
+            modified_offer = Offering.get_by_id(int(offer_id))
+            v =  modified_offer.visible
+            if v == "yes":
+                v = "no"
+            else:
+                v = "yes"
+            modified_offer.visible = v
+            modified_offer.put()
+
+        if action_type == "adding" and validOffer():
+            user = self.request.cookies.get('username')
+            offer = Offering.addNew(name, cubics, price, comment, user)
+            offer.status ="approved"
+            offer.put()
            
 
         user = self.request.cookies.get('username')
@@ -419,21 +476,34 @@ class SellerPage(Handler):
     def get(self):
         user = self.request.cookies.get('username')
         if user:
+            requests = db.GqlQuery("select * from Request where request_sent ='"+ user +"'")
             offers=db.GqlQuery("select * from Offering where seller_id ='"+ user +"'")
-            self.render("seller.html",offers=offers)
+            self.render("seller.html",offers=offers,requests=requests)
         else:
             self.redirect("/login")
     def post(self):
 
         user = self.request.cookies.get('username')
-        item_name = self.request.get('name')
-        item_cubics = self.request.get('cubics')
-        item_price = self.request.get('price')
+        name = self.request.get('name')
+        cubics = self.request.get('cubics')
+        price = self.request.get('price')
         comment = self.request.get('comment')
+        offer_id = self.request.get('offer_id')
+        action_type = self.request.get("actionType")
 
-        if validOffer():
-            offer = Offering.addNew(item_name, item_cubics, item_price, comment, user)
+        if action_type == "adding" and validOffer():
+            offer = Offering.addNew(name, cubics, price, comment, user)
             offer.put()
+        if action_type == "editing":
+            modified_offer = Offering.get_by_id(int(offer_id))
+            modified_offer.item_name = name
+            modified_offer.item_price = price
+            modified_offer.item_cubics = cubics
+            modified_offer.comment = comment
+            modified_offer.put()
+        if action_type == "deleting":
+            offer = Offering.get_by_id(int(offer_id))
+            offer.delete()
         
         self.redirect('/seller')
 class AddOffer(Handler):
@@ -488,81 +558,12 @@ class LogIn(Handler):
         else:
             self.render("login.html",user=username,pas=password)
 
-
-
-class AddUser(Handler):
-    def get(self):
-        self.render("signup.html")
-    def post(self):
-        username=self.request.get('username')
-        password=self.request.get('password')
-        user_type=self.request.get('usertype')
-        #Check if username is taken
-        if valid(username) and valid(password):
-            u = User.register(username, password,user_type)
-            u.put()
-            
-            #self.response.set_cookie('username', username)
-            #self.response.set_cookie('userExp', startExp)
-            #self.response.set_cookie('userRank', startRank)
-
-            self.redirect('/profile/'+username)
-        else:
-            self.render("signup.html",user=username,pas=password)
-
-
 class ProfilePage(Handler):
     def get(self,name):   
-        #u=User.get_by_id(int(num))
-        u = User.byName(name)
-        try:
-            userScoresDict = u.scoresDict
-            userScoresDict = json.loads(userScoresDict)
-        except Exception, e:
-            userScoresDict = "{}"
-        #userScoresDict = u.scoresDict
-        #userScoresDict = json.loads(userScoresDict)
+        pass
+    def post(self, num):
+        pass
 
-            
-        t=db.GqlQuery("select * from Test Limit 4")
-        """
-        for test in t:
-            for testId in userScoresDict:
-                if test.key().id() == testId:
-                    scoresOnShownTests.append[userScoresDict[testId]]
-        """
-        self.render("profile.html",user=u,tests=t,userScores=userScoresDict)
-    def post(self, num):
-        pass
-class Tests(Handler):
-    def get(self):   
-        t=db.GqlQuery("select * from Test Limit 10")
-        self.render("tests.html",tests=t)
-        
-    def post(self, num):
-        pass
-class TestPage(Handler):
-    def get(self, num):   
-        t=Test.get_by_id(int(num))
-        self.response.set_cookie('currentTest', num)
-        self.response.set_cookie('currentTestRank', t.rankString)
-        self.render("test.html",test=t)
-        
-    def post(self, num):
-        pass
-class GetTests(Handler):
-    def get(self):   
-        t=db.GqlQuery("select * from Test Limit 10")
-        self.render("getTests.html",tests=t)
-        
-    def post(self):
-        pass
-class GetTest(Handler):
-    def get(self, num):   
-        t=Test.get_by_id(int(num))
-        self.render("test.html",test=t)
-    def post(self):
-        pass
 class GetNavigation(Handler):
     def get(self):   
         u=self.request.cookies.get('username')
@@ -574,42 +575,7 @@ class GetFooter(Handler):
         self.render("footer.html")
     def post(self):
         pass
-class AddTestResult(Handler):
-    def get(self, num):   
-        pass
-    def post(self):
-        currentTestId=self.request.cookies.get("currentTest")
-        username=self.request.cookies.get("username")
-        token=self.request.cookies.get("token")
-        if token != generateToken(username):
-            self.redirect('/error')
-        score=int(self.request.get('score'))
-        if score <= 100 and score >= 0:
-            u = User.byName(username)
-            #get json as string convert to dict, add new value convert to str and add to database
-            userScoresDict = u.scoresDict          
-            userScoresDict = json.loads(userScoresDict)
-            if currentTestId in userScoresDict.keys():
-                if int(userScoresDict[currentTestId]) < score:  
-                    userScoresDict[currentTestId] = str(score)
-            else:
-                userScoresDict[currentTestId] = str(score)
-            u.scoresDict = json.dumps(userScoresDict)
-            #rank and exp
-            newrank=self.request.get('nr')
-            newexp=int(self.request.get('ne'))
-            u.rank = newrank
-            u.experience = newexp
-            u.put()
-            #test new average
-            t=Test.get_by_id(int(currentTestId))
-            t.numberTaken += 1
-            newAverage = ((t.numberTaken - 1)*t.average + score) / t.numberTaken
-            newAverage=round(newAverage)
-            t.average = newAverage
-            t.put()
-            #
-            self.response.set_cookie('userScores', str(u.scoresDict))
+
         
 ##########################################################
 ##########################################################

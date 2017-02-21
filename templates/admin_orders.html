@@ -9,11 +9,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Clean Blog</title>
+    <title>Ema</title>
 
     <!-- scrips -->
     <script src="../jquery.js"></script>
     <script src="../jquery-ui.js"></script>
+    <script src="../jquery.cookie.js"></script>
     <script src="../chart.js"></script>
     <script src="../util.js"></script>
 
@@ -49,34 +50,62 @@
 <body>
     <style type="text/css">
         #navDiv{
-            height: 12vh;
-            background-color: #000080;
+            height: 16vh;
+            /*background-color: #000080;*/
+            background-color:white;
             color: white;
             border-bottom: 2px solid black;
         }
         #logo{
             font-size: 46px;
             color: white;
-            margin-left: 20px;
+            margin-left: 0px;
             float: left;
+            padding: 10px;
+        }
+        #logoImg{
+            width: 120px;
         }
         #topNavLinks{
             float: right;
             margin-right: 20px;
+
         }
         .topNavButtonSpan{
-            color: white;
+            color: black;
+        }
+        #loggedAsDiv{
+            color: black;
+            float: right;
+            margin-right: 20px;
+            margin-top: 30px;
         }
         #sideNav{
             background-color:  white;
             height:100vh;
             text-align: center;
             border-right: 2px solid black;
+            background-image: url("../sidenav.png");
+            background-size: 100%;
         }
+        #sidenavLinks{
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 4px;
+        }
+
 
 
         .order{
             background-color: white;
+            border: 1px solid grey;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            margin: 10px;
+            margin-bottom: 14px;
+            padding: 4px;
+        }
+        .order_new{
+            background-color: lightgreen;
             border: 1px solid grey;
             border-radius: 4px;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -95,6 +124,10 @@
         .form-group{
             margin-bottom: 0px;
         }
+        .from_inventory{
+            float: right;
+            color: #000080;
+        }
         .sendDeleteDiv{
             float:right;
             margin-bottom: 6px;
@@ -108,10 +141,12 @@
         }
     </style>
     <!-- Navigation -->
-   <nav >
+    <nav >
        <div id = "navDiv">
 
-           <div id="logo">WOOD</div>
+           <div id="logo">
+               <img id="logoImg" src="../logo.png">
+           </div>
            <div id="topNavLinks">
                
                <a href="index.html"><span class="topNavButtonSpan">Home</span></a> 
@@ -119,8 +154,15 @@
                <a href="contact.html"><span class="topNavButtonSpan">Contact</span></a>
                  
            </div>
+           <br>
+
+           <div id = "loggedAsDiv">Logged as: </div>
+           <script type="text/javascript">
+               var username =   $.cookie("username")
+               $("#loggedAsDiv").text("Logged as: "+username)
+           </script>
        </div>
-   </nav>
+    </nav>
     
 
     <!-- Page Header -->
@@ -151,43 +193,46 @@
    <div class="container-fluid">
         <div class="row">
             <div class="col-sm-2 " id="sideNav">
-                <h1>Menu</h1>
-                <div><a href="/admin">Inventory</a></div>
-                <div><a href="/adminorders">Orders</a></div>
-                <div><a href="/adminusers">Accounts</a></div>
+                <div id="sidenavLinks">
+                    <h1>Menu</h1>
+                    <div><a href="/admin">Inventory</a></div>
+                    <div><a href="/adminorders">Orders</a></div>
+                    <div><a href="/adminusers">Accounts</a></div>
+                </div>
             </div>
             <div class="col-sm-10 ">
                 <script type="text/javascript">
                 function deleting (item_id) {
-                    console.log(22)
+                    //console.log(22)
                     $(".actionType").val('deleting');
                     $("#form1"+item_id).submit();
+                }
+                function sending (order_id) {
+                    var selected_seller = $('#select_'+order_id).find(":selected").text();
+                    //console.log(selected_seller)
+                    $(".actionType").val('sending');
+                   
+                    $(".selected_seller").val(selected_seller);
+                    $("#form1"+order_id).submit();
                 }
                 </script>
 
                 <h1>Orders:</h1>
                 {% for order in orders %}
-                <!--
-                <div class="row">
-                    <div class="col-sm-2 "> <span class="order_from">{{order.requester_id}}:</span></div>
-                    <div class="col-sm-3 "> <span class="item_name">{{order.item_name}}:</span></div>
-                    <div class="col-sm-2 "><span class="item_cubics">{{order.item_cubics}} &#13221;</span></div>
-                    <div class="col-sm-2 "><span class="item_price">at: {{order.item_price}} /&#13221;</span></div>
-                    <div class="col-sm-1 "><span class="item_comment">{{order.comment}}</span></div>
-                    <div class="col-sm-2 "><span class="from_inventory">from inv. {{order.from_inventory}}</span>
-
-                    </div>
-
-                </div>
-                <hr>
-                -->
-                <div class="order">
+                {% if order.request_sent == "" %}
+                <div class="order_new">
                     <form class="form-horizontal"  method="post"  id="form1{{order.key().id()}}">
                         <div class="row">
                             <div class="col-sm-6">
+                                
                                 <div class ="order_by_idDiv">
+                                    {% if order.from_inventory != "no" %}
+                                    <img src="../inventory.svg" width = "30">
+                                    {% endif %}
+
                                     By: {{order.requester_id}}
                                 </div>
+                               
                             </div>
                             <div class="col-sm-6">
                                 <div class= "sendDeleteDiv">
@@ -196,31 +241,167 @@
                                     <input type="submit" value="Approve">
                                         <input type="button" value="Delete" onclick="deleting({{order.key().id()}})">
                                         -->
+                                     <span class="from_inventory">from inv. {{order.from_inventory}}</span>
                                 </div>
                             </div>
                             
                         </div>
                        
                         <div class="form-group">
+
+                            <div class="col-sm-4 ">
+                                <input type="text" class="form-control" name="name" placeholder="item name" value ="{{order.item_name}}"/>
+                            </div>
+                            <div class="col-sm-1 mycol">
+                                <input type="text" class="form-control" name="cubics" placeholder="available" value ="{{order.item_cubics}} "/>
+                            </div>
+                            <div class="col-sm-1 mycol">
+                                &nbsp; &#13221;
+                            </div>
+                            <div class="col-sm-1 mycol">
+                                <input type="text" class="form-control" name="price"  placeholder="price" value ="{{order.item_price}}"/>
+                            </div>  
+                            <div class="col-sm-1 mycol">
+                                &nbsp; &#8364;/&#13221;
+                            </div> 
+                            <div class="col-sm-4 "> 
+                                <textarea placeholder="Comment (optional)" rows="1" name="comment">{{order.comment}}</textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4" style="margin-left:18px;"> 
+                                    <select id="select_{{order.key().id()}}">
+                                        {% for seller in sellers %}
+                                        <option value="{{seller.username}}">{{seller.username}}</option>
+
                             
-                            <div class="col-sm-4">
-                                <!--<input type="text" class="form-control" name="name" placeholder="item name" value ="{{order.item_name}}"/>-->{{order.item_name}}
-                            </div>
-                            <div class="col-sm-2">
-                                <!--<input type="text" class="form-control" name="cubics" placeholder="cubics" value ="{{order.item_cubics}} &#13221;"/>-->{{order.item_cubics}} &#13221;
-                            </div>
-                            <div class="col-sm-2">
-                                <!--<input type="text" class="form-control" name="price"  placeholder="price" value ="{{order.item_price}} $/&#13221;"/>-->{{order.item_price}} $/&#13221;
-                            </div>   
-                            <div class="col-sm-4"> 
-                                <!--<textarea placeholder="Comment (optional)" rows="1" name="comment">{{order.comment}}</textarea>
-                            -->{{order.comment}}
+                                        {% endfor %}
+                                    </select>
+                                
+                                
+                                    <!-- <input type="submit" value="Send">-->
+                                    <input class ="selected_seller" type="hidden" name="selected_seller" style="" value ="">
+                                    <input class ="actionType" type="hidden" name="actionType" style="" value ="sending">
+                                    <input type="button" value="Send" onclick="sending({{order.key().id()}})">
+                                </div>
                             </div>
                             
                         </div>
                         
                     </form>
                 </div>
+                {% endif %}
+                {% endfor %}
+                <h1>Sent to Seller:</h1>
+                {% for order in orders %}
+                {% if order.request_sent != "" %}
+                    <div class="order">
+                        <form class="form-horizontal"  method="post"  id="form1{{order.key().id()}}">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class ="order_by_idDiv">
+                                        By: {{order.requester_id}}
+                                    </div>
+                                   
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class= "sendDeleteDiv">
+                                        <input type="hidden" name="offer_id" style="" value ="{{order.key().id()}}">
+                                        <!--<input class ="actionType" type="hidden" name="actionType" style="" value ="approving">
+                                        <input type="submit" value="Approve">
+                                            <input type="button" value="Delete" onclick="deleting({{order.key().id()}})">
+                                            -->
+                                         <span class="from_inventory">from inv. {{order.from_inventory}}</span>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="row">
+                                
+                                <div class="col-sm-4">
+                                    {{order.item_name_original}}
+                                </div>
+                                <div class="col-sm-1 mycol" >
+                                    {{order.item_cubics_original}}
+                                </div>
+                                <div class="col-sm-1 mycol">
+                                    &nbsp; &#13221;
+                                </div>
+                                <div class="col-sm-1 mycol">
+                                    {{order.item_price_original}}
+                                </div>   
+                                <div class="col-sm-1 mycol">
+                                    &nbsp;  &euro;/&#13221;
+                                </div>
+                                <div class="col-sm-4"> 
+                                    <textarea placeholder="Comment (optional)" rows="1" name="comment">{{order.comment_original}}</textarea>
+                                </div>
+                                
+                            </div>
+                            <div class="form-group">
+
+                                <div class="col-sm-4 ">
+                                    <input type="text" class="form-control" name="name" placeholder="item name" value ="{{order.item_name}}"/>
+                                </div>
+                                <div class="col-sm-1 mycol">
+                                    <input type="text" class="form-control" name="cubics" placeholder="available" value ="{{order.item_cubics}} "/>
+                                </div>
+                                <div class="col-sm-1 mycol">
+                                    &nbsp; &#13221;
+                                </div>
+                                <div class="col-sm-1 mycol">
+                                    <input type="text" class="form-control" name="price"  placeholder="price" value ="{{order.item_price}}"/>
+                                </div>  
+                                <div class="col-sm-1 mycol">
+                                    &nbsp; &#8364;/&#13221;
+                                </div> 
+                                <div class="col-sm-4 "> 
+                                    <textarea placeholder="Comment (optional)" rows="1" name="comment"></textarea>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-4" style="margin-left:18px;"> 
+                                        
+                                        <select id="select_{{order.key().id()}}">
+                                            {% for seller in sellers %}
+                                            <option value="{{seller.username}}">{{seller.username}}</option>
+
+                                
+                                            {% endfor %}
+                                        </select>
+                                    
+                                      
+                                        <input class ="selected_seller" type="hidden" name="selected_seller" style="" value ="">
+                                        <input class ="actionType" type="hidden" name="actionType" style="" value ="sending">
+                                        <input type="button" value="Resend" onclick="sending({{order.key().id()}})">
+                                            <input type="button" value="Delete" onclick="deleting({{order.key().id()}})">
+                                        
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4" style="margin-left:18px;"> 
+                                        <!--
+                                        <select id="select_{{order.key().id()}}">
+                                            {% for seller in sellers %}
+                                            <option value="{{seller.username}}">{{seller.username}}</option>
+
+                        
+                                            {% endfor %}
+                                        </select>
+                                    
+                                      
+                                        <input class ="selected_seller" type="hidden" name="selected_seller" style="" value ="">
+                                        <input class ="actionType" type="hidden" name="actionType" style="" value ="sending">
+                                        <input type="button" value="Send" onclick="sending({{order.key().id()}})">
+                                        -->
+                                        <span>Sent to: {{order.request_sent}}</samp>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                        </form>
+                    </div>
+                {% endif %}  
                 {% endfor %}
 
             </div>

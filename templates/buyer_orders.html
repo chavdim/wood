@@ -9,11 +9,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Clean Blog</title>
+    <title>Ema</title>
 
     <!-- scrips -->
     <script src="../jquery.js"></script>
     <script src="../jquery-ui.js"></script>
+    <script src="../jquery.cookie.js"></script>
     <script src="../chart.js"></script>
     <script src="../util.js"></script>
 
@@ -49,30 +50,51 @@
 
     <style type="text/css">
         #navDiv{
-            height: 12vh;
-            background-color: #000080;
+            height: 16vh;
+            /*background-color: #000080;*/
+            background-color:white;
             color: white;
             border-bottom: 2px solid black;
         }
         #logo{
             font-size: 46px;
             color: white;
-            margin-left: 20px;
+            margin-left: 0px;
             float: left;
+            padding: 10px;
+        }
+        #logoImg{
+            width: 120px;
         }
         #topNavLinks{
             float: right;
             margin-right: 20px;
+
         }
         .topNavButtonSpan{
-            color: white;
+            color: black;
+        }
+        #loggedAsDiv{
+            color: black;
+            float: right;
+            margin-right: 20px;
+            margin-top: 30px;
         }
         #sideNav{
             background-color:  white;
             height:100vh;
             text-align: center;
             border-right: 2px solid black;
+            background-image: url("../sidenav.png");
+            background-size: 100%;
         }
+        #sidenavLinks{
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 4px;
+        }
+
+
+
 
         .offer{
             background-color: white;
@@ -114,10 +136,12 @@
         }
     </style>
     <!-- Navigation -->
-   <nav >
+    <nav >
        <div id = "navDiv">
 
-           <div id="logo">WOOD</div>
+           <div id="logo">
+               <img id="logoImg" src="../logo.png">
+           </div>
            <div id="topNavLinks">
                
                <a href="index.html"><span class="topNavButtonSpan">Home</span></a> 
@@ -125,8 +149,15 @@
                <a href="contact.html"><span class="topNavButtonSpan">Contact</span></a>
                  
            </div>
+           <br>
+
+           <div id = "loggedAsDiv">Logged as: </div>
+           <script type="text/javascript">
+               var username =   $.cookie("username")
+               $("#loggedAsDiv").text("Logged as: "+username)
+           </script>
        </div>
-   </nav>
+    </nav>
     
 
     <!-- Page Header -->
@@ -157,10 +188,12 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-2 " id="sideNav">
-        		<h1>Menu</h1>
-        		<div><a href="/buyer">Inventory</a></div>
-        		<div><a href="/buyerorders">My orders</a></div>
-        		<div><a href="/messages">Messages?</a></div>
+                <div id="sidenavLinks">
+        		  <h1>Menu</h1>
+            		<div><a href="/buyer">Inventory</a></div>
+            		<div><a href="/buyerorders">My orders</a></div>
+            		<!--<div><a href="/messages">Messages?</a></div>-->
+                </div>
 
         	</div>
             <div class="col-sm-10 ">
@@ -181,25 +214,30 @@
 
                 <div class="order">
                     <form class="form-horizontal"  method="post"  id="form1">
-            
-                       
                         <div class="form-group">
                             
-                            <div class="col-sm-4">
-                                <input type="text" name="name" placeholder ="Item name">
+                            <div class="col-sm-4 ">
+                                <input type="text" class="form-control" name="name" placeholder="item name" value =""/>
                             </div>
-                            <div class="col-sm-2">
-                                <input type="text" name="cubics" style="width:90px;" placeholder ="Amount"> &#13221;
+                            <div class="col-sm-1 mycol">
+                                <input type="text" class="form-control" name="cubics" placeholder="volume" value =""/>
                             </div>
-                            <div class="col-sm-2">
-                                <input type="text" name="price" style="width:90px;" placeholder ="Price ">/ &#13221;
-                            </div>   
-                            <div class="col-sm-4"> 
+                            <div class="col-sm-1 mycol">
+                                &nbsp; &#13221;
+                            </div>
+                            <div class="col-sm-1 mycol">
+                                <input type="text" class="form-control" name="price"  placeholder="price" value =""/>
+                            </div>  
+                            <div class="col-sm-1 mycol">
+                                &nbsp;  &euro;/&#13221;
+                            </div> 
+                            <div class="col-sm-4 "> 
                                 <textarea placeholder="Comment (optional)" rows="1" name="comment"></textarea>
-                            </div>    
+                            </div>
+                            
                         </div>
-
                         <div class="row">
+                            
                             <div class="col-sm-0">
                                 <div class ="seller_idDiv">
                                     
@@ -220,40 +258,24 @@
                 <h1>My orders:</h1>
                 
                 {% for req in requests %}
-                <!--
-                <div class="row">
-                    <form method="post" id="form1{{req.key().id()}}">                 
-                        <input type="text" name="name" value ="{{req.item_name}}">
-                        <input type="text" name="cubics" style="width:60px;" value ="Amount {{req.item_cubics}}"> &#13221;
-                        <input type="text" name="price" style="width:60px;" value ="{{req.item_price}} ">/ &#13221;
-                        <input type="text" name="comment" value ="{{req.comment}}">
-                        <input class ="actionType" type="hidden" name="actionType" style="" value ="editing">
-                        <input  type="hidden" name="req_id" style="" value ="{{req.key().id()}}">
-                        <input type="submit" value="Save changes">
-                        	<input type="button" value="Delete" onclick="deleting({{req.key().id()}})">
-                           
-                        
-                    </form>
-                </div>
-                -->
                 <div class="order">
-                    <form class="form-horizontal"  method="post"  id="form1">
+                    <form class="form-horizontal"  method="post"  id="form1{{req.key().id()}}">
                 
                        
                         <div class="form-group">
                             
                             <div class="col-sm-4">
-                                <!--<input type="text" class="form-control" name="name" placeholder="item name" value ="{{req.item_name}}"/>--><span class="item_nameSpan">{{req.item_name}}</span>
+                                <!--<input type="text" class="form-control" name="name" placeholder="item name" value ="{{req.item_name}}"/>--><span class="item_nameSpan">{{req.item_name_original}}</span>
                             </div>
                             <div class="col-sm-2">
-                                <!--<input type="text" class="form-control" name="cubics" placeholder="cubics" value ="{{req.item_cubics}} &#13221;"/>-->{{req.item_cubics}} &#13221;
+                                <!--<input type="text" class="form-control" name="cubics" placeholder="cubics" value ="{{req.item_cubics}} &#13221;"/>-->{{req.item_cubics_original}} &#13221;
                             </div>
                             <div class="col-sm-2">
-                                <!--<input type="text" class="form-control" name="price"  placeholder="price" value ="{{req.item_price}} $/&#13221;"/>-->{{req.item_price}} $/&#13221;
+                                <!--<input type="text" class="form-control" name="price"  placeholder="price" value ="{{req.item_price}} $/&#13221;"/>-->{{req.item_price_original}} &euro;/&#13221;
                             </div>   
                             <div class="col-sm-4"> 
                                 <!--<textarea placeholder="Comment (optional)" rows="1" name="comment">{{req.comment}}</textarea>
-                            -->{{req.comment}}
+                            -->{{req.comment_original}}
                             </div>
                             
                         </div>
@@ -267,7 +289,7 @@
                                         -->
                                     <input class ="actionType" type="hidden" name="actionType" style="" value ="editing">
                                     <input  type="hidden" name="req_id" style="" value ="{{req.key().id()}}">
-                                    <input type="submit" value="Save changes">
+                                    <!--<input type="submit" value="Save changes">-->
                                         <input type="button" value="Delete" onclick="deleting({{req.key().id()}})">
                                 </div>
                             </div>

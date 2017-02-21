@@ -9,11 +9,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Clean Blog</title>
+    <title>Ema</title>
 
     <!-- scrips -->
     <script src="../jquery.js"></script>
     <script src="../jquery-ui.js"></script>
+    <script src="../jquery.cookie.js"></script>
     <script src="../chart.js"></script>
     <script src="../util.js"></script>
 
@@ -49,12 +50,77 @@
 
     <style type="text/css">
         #navDiv{
-            height: 12vh;
-            background-color: grey;
+            height: 16vh;
+            /*background-color: #000080;*/
+            background-color:white;
+            color: white;
+            border-bottom: 2px solid black;
+        }
+        #logo{
+            font-size: 46px;
+            color: white;
+            margin-left: 0px;
+            float: left;
+            padding: 10px;
+        }
+        #logoImg{
+            width: 120px;
+        }
+        #topNavLinks{
+            float: right;
+            margin-right: 20px;
+
+        }
+        .topNavButtonSpan{
+            color: black;
+        }
+        #loggedAsDiv{
+            color: black;
+            float: right;
+            margin-right: 20px;
+            margin-top: 30px;
         }
         #sideNav{
-            background-color: pink;
+            background-color:  white;
             height:100vh;
+            text-align: center;
+            border-right: 2px solid black;
+            background-image: url("../sidenav.png");
+            background-size: 100%;
+        }
+        #sidenavLinks{
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 4px;
+        }
+
+
+
+        .offer{
+            background-color: white;
+            border: 1px solid grey;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            margin: 10px;
+            margin-bottom: 14px;
+            padding: 4px;
+        }
+        .offer_requested{
+            background-color: lightgreen;
+            border: 1px solid grey;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            margin: 10px;
+            margin-bottom: 14px;
+            padding: 4px;
+        }
+        .request{
+            background-color: lightgreen;
+            border: 1px solid grey;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            margin: 10px;
+            margin-bottom: 14px;
+            padding: 4px;
         }
         .approved_item{
             border-bottom: 1px solid grey;
@@ -68,7 +134,7 @@
             margin-bottom: 0px;
         }
         .sendDeleteDiv{
-            float:right;
+          
             margin-bottom: 6px;
             margin-right: 12px;
         }
@@ -77,7 +143,7 @@
             margin-right: 26px;
         }
         body{
-            height:100%; /* force the BODY element to match the height of the HTML element */
+            background-color: #f9f9f9;
         }
         textarea{
             width: 95%;
@@ -85,14 +151,26 @@
     </style>
     <!-- Navigation -->
     <nav >
-        <div id = "navDiv">
-            <ul >
-                <li>
-                    <a href="index.html">Home</a> <a href="about.html">About</a>  <a href="contact.html">Contact</a>
-                </li>
-                
-            </ul>
-        </div>
+       <div id = "navDiv">
+
+           <div id="logo">
+               <img id="logoImg" src="../logo.png">
+           </div>
+           <div id="topNavLinks">
+               
+               <a href="index.html"><span class="topNavButtonSpan">Home</span></a> 
+               <a href="about.html"><span class="topNavButtonSpan">About</span></a>  
+               <a href="contact.html"><span class="topNavButtonSpan">Contact</span></a>
+                 
+           </div>
+           <br>
+
+           <div id = "loggedAsDiv">Logged as: </div>
+           <script type="text/javascript">
+               var username =   $.cookie("username")
+               $("#loggedAsDiv").text("Logged as: "+username)
+           </script>
+       </div>
     </nav>
     
 
@@ -124,9 +202,11 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-2 " id="sideNav">
-        		<h1>Menu</h1>
-        		<div><a href="/seller">My offers</a></div>
-        		<div><a href="/adminusers">Messages?</a></div>
+                <div id="sidenavLinks">
+        		  <h1>Menu</h1>
+        		  <div><a href="/seller">My offers</a></div>
+        		  <!--<div><a href="/adminusers">Messages?</a></div>-->
+                </div>
 
         	</div>
             <div class="col-sm-10 ">
@@ -135,49 +215,145 @@
             		font-size: 30px;
             	}
             	</style>
+                <script type="text/javascript">
+                function deleting (item_id) {
+                    //console.log(22)
+                    $(".actionType").val('deleting');
+                    $("#form1"+item_id).submit();
+                }
+                </script>
+                <h1>Requests:</h1>
+                {% for req in requests %}
+                <div class="request">
+                    <form class="form-horizontal"  method="post"  id="form1{{req.key().id()}}">
+                        <div class="form-group">
+                            
+                            <div class="col-sm-4 ">
+                                <input type="text" class="form-control" name="name" placeholder="item name" value ="{{req.item_name}}"/>
+                            </div>
+                            <div class="col-sm-1 mycol">
+                                <input type="text" class="form-control" name="cubics" placeholder="available" value ="{{req.item_cubics}}"/>
+                            </div>
+                            <div class="col-sm-1 mycol">
+                                &nbsp; &#13221;
+                            </div>
+                            <div class="col-sm-1 mycol">
+                                <input type="text" class="form-control" name="price"  placeholder="price" value ="{{req.item_price}}"/>
+                            </div>  
+                            <div class="col-sm-1 mycol">
+                                &nbsp; &euro;/&#13221;
+                            </div> 
+                            <div class="col-sm-4 "> 
+                                <textarea placeholder="Comment (optional)" rows="1" name="comment">{{req.comment}}</textarea>
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+                            
+                            <div class="col-sm-12">
+                                <div class= "requestDiv">
+                                    <input type="hidden" name="req_id" style="" value ="{{req.key().id()}}">
+                                    <input class ="actionType" type="hidden" name="actionType" style="" value ="message">
+                                    <input type="submit" value="?Message?">
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                    </form>
+                </div>
+                {% endfor %}
                 <h1>Add offer:</h1>
-                
-                
-                <div class="row">
-
+                <div class="offer">
                     <form class="form-horizontal"  method="post"  id="form1">
-                    <div class="form-group">
+                        <div class="form-group">
+                            
+                            <div class="col-sm-4 ">
+                                <input type="text" class="form-control" name="name" placeholder="item name" value =""/>
+                            </div>
+                            <div class="col-sm-1 mycol">
+                                <input type="text" class="form-control" name="cubics" placeholder="available" value =""/>
+                            </div>
+                            <div class="col-sm-1 mycol">
+                                &nbsp; &#13221;
+                            </div>
+                            <div class="col-sm-1 mycol">
+                                <input type="text" class="form-control" name="price"  placeholder="price" value =""/>
+                            </div>  
+                            <div class="col-sm-1 mycol">
+                                &nbsp;  &euro;/&#13221;
+                            </div> 
+                            <div class="col-sm-4 "> 
+                                <textarea placeholder="Comment (optional)" rows="1" name="comment"></textarea>
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+                            
+                            <div class="col-sm-0">
+                                <div class ="seller_idDiv">
+                                    
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class= "sendDeleteDiv">
+                                    <input class ="actionType" type="hidden" name="actionType" style="" value ="adding">
+                                    <input type="submit" value="Add">
+                                </div>
+                            </div>
+                            
+                        </div>
                         
-                        <div class="col-sm-4" id="form1" me>
-                            <input type="text" class="form-control" name="name" placeholder="item name" value =""/>
-                        </div>
-                        <div class="col-sm-2">
-                            <input type="text" class="form-control" name="cubics" placeholder="cubics" value ="&#13221;"/>
-                        </div>
-                        <div class="col-sm-2">
-                            <input type="text" class="form-control" name="price"  placeholder="price" value ="$/&#13221;"/>
-                        </div>   
-                        <div class="col-sm-4"> 
-                            <textarea placeholder="Comment (optional)" rows="1" name="comment"></textarea>
-                        </div>
-                        <div class="addButton"> 
-                            <input class ="actionType" type="hidden" name="actionType" style="" value ="adding">
-                            <input type="submit" value="Add">
-                        </div> 
-                        
-                    </div>
                     </form>
                 </div>
 
             	<h1>My offers:</h1>
                 {% for offer in offers %}
                 
+                
+                <div class="offer">
+                
 
-                <form method="post"  id="form1{{offer.key().id()}}">                     
-                    <input type="text" name="name" value ="{{offer.item_name}}">
-                    <input type="text" name="cubics" style="width:60px;" value ="{{offer.item_cubics}}">
-                    <input type="text" name="price" style="width:60px;" value ="{{offer.item_price}}">
-                    <input type="text" name="comment" value ="{{offer.comment}}">
-                    <input type="hidden" name="offer_id" style="" value ="{{offer.key().id()}}">
-                    <input class ="actionType" type="hidden" name="actionType" style="" value ="editing">
-                    <input type="submit" value="Save changes">
-                        <input type="button" value="Delete" onclick="deleting({{offer.key().id()}})">
-                </form>
+                    <form class="form-horizontal"  method="post"  id="form1{{offer.key().id()}}">
+                
+                       
+                        <div class="form-group">
+                            
+                            <div class="col-sm-4 ">
+                                <input type="text" class="form-control" name="name" placeholder="item name" value ="{{offer.item_name_original}}"/>
+                            </div>
+                            <div class="col-sm-1 mycol">
+                                <input type="text" class="form-control" name="cubics" placeholder="cubics" value ="{{offer.item_cubics_original}} "/>
+                            </div>
+                            <div class="col-sm-1 mycol">
+                                &nbsp; &#13221;
+                            </div>
+                            <div class="col-sm-1 mycol">
+                                <input type="text" class="form-control" name="price"  placeholder="price" value ="{{offer.item_price_original}} "/>
+                            </div>  
+                            <div class="col-sm-1 mycol">
+                                &nbsp;  &euro;/&#13221;
+                            </div> 
+                            <div class="col-sm-4 "> 
+                                <textarea placeholder="Comment (optional)" rows="1" name="comment">{{offer.comment_original}}</textarea>
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+                            
+                            <div class="col-sm-12">
+                                <div class= "requestDiv">
+                                    <input type="hidden" name="offer_id" style="" value ="{{offer.key().id()}}">
+                                    <input class ="actionType" type="hidden" name="actionType" style="" value ="editing">
+                                    <input type="submit" value="Save changes">
+                                        <input type="button" value="Delete" onclick="deleting({{offer.key().id()}})">
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                    </form>
+                </div>
                 {% endfor %}
                 
 

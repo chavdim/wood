@@ -9,11 +9,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Clean Blog</title>
+    <title>Ema</title>
 
     <!-- scrips -->
     <script src="../jquery.js"></script>
     <script src="../jquery-ui.js"></script>
+    <script src="../jquery.cookie.js"></script>
     <script src="../chart.js"></script>
     <script src="../util.js"></script>
 
@@ -31,7 +32,7 @@
     <!-- Custom CSS -->
     <link href="../css/clean-blog.css" rel="stylesheet">
 
-    <!-- Custom Fonts 
+    <!-- Custom Fonts  
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
@@ -49,32 +50,58 @@
 <body>
     <style type="text/css">
         #navDiv{
-            height: 12vh;
-            background-color: #000080;
+            height: 16vh;
+            /*background-color: #000080;*/
+            background-color:white;
             color: white;
             border-bottom: 2px solid black;
         }
         #logo{
             font-size: 46px;
             color: white;
-            margin-left: 20px;
+            margin-left: 0px;
             float: left;
+            padding: 10px;
+        }
+        #logoImg{
+            width: 120px;
         }
         #topNavLinks{
             float: right;
             margin-right: 20px;
+
         }
         .topNavButtonSpan{
-            color: white;
+            color: black;
+        }
+        #loggedAsDiv{
+            color: black;
+            float: right;
+            margin-right: 20px;
+            margin-top: 30px;
         }
         #sideNav{
             background-color:  white;
             height:100vh;
             text-align: center;
             border-right: 2px solid black;
+            background-image: url("../sidenav.png");
+            background-size: 100%;
+        }
+        #sidenavLinks{
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 4px;
         }
 
-
+        .offer{
+            background-color: white;
+            border: 1px solid grey;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            margin: 10px;
+            margin-bottom: 14px;
+            padding: 4px;
+        }
         .approved_item{
             border: 1px solid grey;
             background-color: white;
@@ -83,6 +110,18 @@
             margin: 10px;
             margin-bottom: 14px;
             padding: 4px;
+        }
+        .approved_item_requested{
+            border: 1px solid grey;
+            background-color: lightgreen;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            margin: 10px;
+            margin-bottom: 14px;
+            padding: 4px;
+        }
+        .not_visible{
+            border: 10px solid black;
         }
         .pending_item{
             border: 1px solid grey;
@@ -105,7 +144,7 @@
             margin-right: 12px;
         }
         .requested_byDiv{
-            color: green;
+            color: black;
             font-style: italic;
             margin-left: 10px;
         }
@@ -122,7 +161,9 @@
     <nav >
         <div id = "navDiv">
 
-            <div id="logo">WOOD</div>
+            <div id="logo">
+                <img id="logoImg" src="../logo.png">
+            </div>
             <div id="topNavLinks">
                 
                 <a href="index.html"><span class="topNavButtonSpan">Home</span></a> 
@@ -130,6 +171,13 @@
                 <a href="contact.html"><span class="topNavButtonSpan">Contact</span></a>
                   
             </div>
+            <br>
+
+            <div id = "loggedAsDiv">Logged as: </div>
+            <script type="text/javascript">
+                var username =   $.cookie("username")
+                $("#loggedAsDiv").text("Logged as: "+username)
+            </script>
         </div>
     </nav>
     
@@ -137,11 +185,12 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-2 " id="sideNav">
-
-                <h1>Menu</h1>
-                <div><a href="/admin">Inventory</a></div>
-                <div><a href="/adminorders">Orders</a></div>
-                <div><a href="/adminusers">Accounts</a></div>
+                <div id="sidenavLinks">
+                    <h1>Menu</h1>
+                    <div><a href="/admin">Inventory</a></div>
+                    <div><a href="/adminorders">Orders</a></div>
+                    <div><a href="/adminusers">Accounts</a></div>
+                </div>
             </div>
             <div class="col-sm-10 ">
                 <script type="text/javascript">
@@ -150,7 +199,55 @@
                     $(".actionType").val('deleting');
                     $("#form1"+item_id).submit();
                 }
+                function visibility (item_id) {
+                    console.log(22)
+                    $(".actionType").val('visibility');
+                    $("#form1"+item_id).submit();
+                }
                 </script>
+                <h1>Add offer:</h1>
+                <div class="offer">
+                    <form class="form-horizontal"  method="post"  id="form1">
+                        <div class="form-group">
+                            
+                            <div class="col-sm-4 ">
+                                <input type="text" class="form-control" name="name" placeholder="item name" value =""/>
+                            </div>
+                            <div class="col-sm-1 mycol">
+                                <input type="text" class="form-control" name="cubics" placeholder="available" value =""/>
+                            </div>
+                            <div class="col-sm-1 mycol">
+                                &nbsp; &#13221;
+                            </div>
+                            <div class="col-sm-1 mycol">
+                                <input type="text" class="form-control" name="price"  placeholder="price" value =""/>
+                            </div>  
+                            <div class="col-sm-1 mycol">
+                                &nbsp;  &euro;/&#13221;
+                            </div> 
+                            <div class="col-sm-4 "> 
+                                <textarea placeholder="Comment (optional)" rows="1" name="comment"></textarea>
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+                            
+                            <div class="col-sm-0">
+                                <div class ="seller_idDiv">
+                                    
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class= "sendDeleteDiv">
+                                    <input class ="actionType" type="hidden" name="actionType" style="" value ="adding">
+                                    <input type="submit" value="Add">
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                    </form>
+                </div>
 
                 <h1>New offers:</h1>
                 
@@ -178,8 +275,14 @@
                 <div class="pending_item">
                     <form class="form-horizontal"  method="post"  id="form1{{pending_offer.key().id()}}">
                         <div class="row">
+                            <div class="col-sm-12">
+                            <div  style="width: 100px; height: 24px;overflow: hidden; text-overflow: clip;">{{pending_offer.date}}</div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-sm-6">
                                 <div class ="seller_idDiv">
+
                                     seller: {{pending_offer.seller_id}}
                                 </div>
                             </div>
@@ -199,12 +302,18 @@
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" name="name" placeholder="item name" value ="{{pending_offer.item_name}}"/>
                             </div>
-                            <div class="col-sm-2">
-                                <input type="text" class="form-control" name="cubics" placeholder="cubics" value ="{{pending_offer.item_cubics}} &#13221;"/>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" name="cubics" placeholder="cubics" value ="{{pending_offer.item_cubics}}"/>
                             </div>
-                            <div class="col-sm-2">
-                                <input type="text" class="form-control" name="price"  placeholder="price" value ="{{pending_offer.item_price}} $/&#13221;"/>
-                            </div>   
+                            <div class="col-sm-1 mycol">
+                                &nbsp; &#13221;
+                            </div>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" name="price"  placeholder="price" value ="{{pending_offer.item_price}}"/>
+                            </div> 
+                            <div class="col-sm-1 mycol">
+                                &nbsp;  &euro;/&#13221;
+                            </div>  
                             <div class="col-sm-4"> 
                                 <textarea placeholder="Comment (optional)" rows="1" name="comment">{{pending_offer.comment}}</textarea>
                             </div>
@@ -215,45 +324,90 @@
                 </div>
                 {% endfor %}
 
-                <h1>Posted offers:</h1>
+                <h1>Approved offers:</h1>
                 {% for approved_offer in approved_offers %}
-                <div class="approved_item">
+                {% if approved_offer.requested_by!="" %}
+               
+                    {% if approved_offer.visible =="no" %}
+                    <div class="approved_item_requested not_visible">
+                    {% else %}
+                    <div class="approved_item_requested">
+                    {% endif %}
+                {% else %}
+                    {% if approved_offer.visible =="no" %}
+                    <div class="approved_item not_visible">
+                    {% else %}
+                    <div class="approved_item">
+                    {% endif %}
+                {% endif %}
                     <form class="form-horizontal"  method="post"  id="form1{{approved_offer.key().id()}}">
                         <div class="row">
                             <div class="col-sm-6">
+                                <div  style="width: 100px; height: 24px;overflow: hidden; text-overflow: clip;">{{approved_offer.date}}</div>
                                 <div class ="seller_idDiv">
+                                    <div class="requested_byDiv">{{approved_offer.requested_by}}</div>
+
                                     seller: {{approved_offer.seller_id}}
 
-                                    <div class="requested_byDiv">{{approved_offer.requested_by}}</div>
+                                    
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class= "sendDeleteDiv">
                                     <input type="hidden" name="offer_id" style="" value ="{{approved_offer.key().id()}}">
                                     <input class ="actionType" type="hidden" name="actionType" style="" value ="editing">
-                                    <input type="submit" value="Save">
+                                    <input type="submit" value="Save changes">
                                         <input type="button" value="Delete" onclick="deleting({{approved_offer.key().id()}})">
+                                        <input type="button" value="Visibility" onclick="visibility({{approved_offer.key().id()}})">
                                 </div>
                             </div>
                             
                         </div>
-                       
+                        <div class="row">
+                            
+                            <div class="col-sm-4">
+                                {{approved_offer.item_name_original}}
+                            </div>
+                            <div class="col-sm-1 mycol" >
+                                {{approved_offer.item_cubics_original}}
+                            </div>
+                            <div class="col-sm-1 mycol">
+                                &nbsp; &#13221;
+                            </div>
+                            <div class="col-sm-1 mycol">
+                                {{approved_offer.item_price_original}}
+                            </div>   
+                            <div class="col-sm-1 mycol">
+                                &nbsp;  &euro;/&#13221;
+                            </div>
+                            <div class="col-sm-4"> 
+                                <textarea placeholder="Comment (optional)" rows="1" name="comment">{{approved_offer.comment_original}}</textarea>
+                            </div>
+                            
+                        </div>
                         <div class="form-group">
                             
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" name="name" placeholder="item name" value ="{{approved_offer.item_name}}"/>
                             </div>
-                            <div class="col-sm-2">
-                                <input type="text" class="form-control" name="cubics" placeholder="cubics" value ="{{approved_offer.item_cubics}} &#13221;"/>
+                            <div class="col-sm-1 mycol" >
+                                <input type="text" class="form-control" name="cubics" placeholder="cubics" value ="{{approved_offer.item_cubics}}"/>
                             </div>
-                            <div class="col-sm-2">
-                                <input type="text" class="form-control" name="price"  placeholder="price" value ="{{approved_offer.item_price}} $/&#13221;"/>
+                            <div class="col-sm-1 mycol">
+                                &nbsp; &#13221;
+                            </div>
+                            <div class="col-sm-1 mycol">
+                                <input type="text" class="form-control" name="price"  placeholder="price" value ="{{approved_offer.item_price}}"/>
                             </div>   
+                            <div class="col-sm-1 mycol">
+                                &nbsp;  &euro;/&#13221;
+                            </div>
                             <div class="col-sm-4"> 
                                 <textarea placeholder="Comment (optional)" rows="1" name="comment">{{approved_offer.comment}}</textarea>
                             </div>
                             
                         </div>
+                       
                         
                     </form>
                 </div>

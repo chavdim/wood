@@ -9,11 +9,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Clean Blog</title>
+    <title>Ema</title>
 
     <!-- scrips -->
     <script src="../jquery.js"></script>
     <script src="../jquery-ui.js"></script>
+    <script src="../jquery.cookie.js"></script>
     <script src="../chart.js"></script>
     <script src="../util.js"></script>
 
@@ -50,29 +51,47 @@
 
     <style type="text/css">
         #navDiv{
-            height: 12vh;
-            background-color: #000080;
+            height: 16vh;
+            /*background-color: #000080;*/
+            background-color:white;
             color: white;
             border-bottom: 2px solid black;
         }
         #logo{
             font-size: 46px;
             color: white;
-            margin-left: 20px;
+            margin-left: 0px;
             float: left;
+            padding: 10px;
+        }
+        #logoImg{
+            width: 120px;
         }
         #topNavLinks{
             float: right;
             margin-right: 20px;
+
         }
         .topNavButtonSpan{
-            color: white;
+            color: black;
+        }
+        #loggedAsDiv{
+            color: black;
+            float: right;
+            margin-right: 20px;
+            margin-top: 30px;
         }
         #sideNav{
             background-color:  white;
             height:100vh;
             text-align: center;
             border-right: 2px solid black;
+            background-image: url("../sidenav.png");
+            background-size: 100%;
+        }
+        #sidenavLinks{
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 4px;
         }
 
 
@@ -102,17 +121,26 @@
     </style>
     <!-- Navigation -->
     <nav >
-        <div id = "navDiv">
+       <div id = "navDiv">
 
-            <div id="logo">WOOD</div>
-            <div id="topNavLinks">
-                
-                <a href="index.html"><span class="topNavButtonSpan">Home</span></a> 
-                <a href="about.html"><span class="topNavButtonSpan">About</span></a>  
-                <a href="contact.html"><span class="topNavButtonSpan">Contact</span></a>
-                  
-            </div>
-        </div>
+           <div id="logo">
+               <img id="logoImg" src="../logo.png">
+           </div>
+           <div id="topNavLinks">
+               
+               <a href="index.html"><span class="topNavButtonSpan">Home</span></a> 
+               <a href="about.html"><span class="topNavButtonSpan">About</span></a>  
+               <a href="contact.html"><span class="topNavButtonSpan">Contact</span></a>
+                 
+           </div>
+           <br>
+
+           <div id = "loggedAsDiv">Logged as: </div>
+           <script type="text/javascript">
+               var username =   $.cookie("username")
+               $("#loggedAsDiv").text("Logged as: "+username)
+           </script>
+       </div>
     </nav>
     
 
@@ -144,10 +172,12 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-2 " id="sideNav">
-                <h1>Menu</h1>
-                <div><a href="/admin">Inventory</a></div>
-                <div><a href="/adminorders">Orders</a></div>
-                <div><a href="/adminusers">Accounts</a></div>
+                <div id="sidenavLinks">
+                    <h1>Menu</h1>
+                    <div><a href="/admin">Inventory</a></div>
+                    <div><a href="/adminorders">Orders</a></div>
+                    <div><a href="/adminusers">Accounts</a></div>
+                </div>
             </div>
             <div class="col-sm-5 ">
                 <script type="text/javascript">
