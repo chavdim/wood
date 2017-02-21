@@ -1,10 +1,235 @@
 <!DOCTYPE html>
-<head><title>Loggy</title></head>
-<body><b>Please fill in the form</b>
-<form method="post" >
-<label>Username<input type="text" name="username" value="{{user}}"></label><br>
-<label>Password<input type="text" name="password" value="{{pas}}"></label><br>
-<input type="submit"></input>
-</form>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Ema</title>
+
+    <!-- scrips -->
+    <script src="../jquery.js"></script>
+    <script src="../jquery-ui.js"></script>
+    <script src="../jquery.cookie.js"></script>
+    <script src="../chart.js"></script>
+    <script src="../util.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bootstrap.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="../clean-blog.min.js"></script>
+    <!-- NOT SURE IF NEEDED
+    <script src="../progressbar.js"></script>
+    <script src="../myChartAndProgress.js"></script>
+    <script src="../chrome.min.js"></script>
+    -->
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../css/clean-blog.css" rel="stylesheet">
+
+    <!-- Custom Fonts 
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+	-->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <style type="text/css">
+        #navDiv{
+            height: 16vh;
+            /*background-color: #000080;*/
+            background-color:white;
+            color: white;
+            border-bottom: 2px solid black;
+        }
+        #logo{
+            font-size: 46px;
+            color: white;
+            margin-left: 0px;
+            float: left;
+            padding: 10px;
+        }
+        #logoImg{
+            width: 120px;
+        }
+        #topNavLinks{
+            float: right;
+            margin-right: 20px;
+
+        }
+        .topNavButtonSpan{
+            color: black;
+        }
+        #loggedAsDiv{
+            color: black;
+            float: right;
+            margin-right: 20px;
+            margin-top: 30px;
+        }
+        #sideNav{
+            background-color:  white;
+            height:100vh;
+            text-align: center;
+            border-right: 2px solid black;
+            background-image: url("../sidenav.png");
+            background-size: 100%;
+        }
+        #sidenavLinks{
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 4px;
+        }
+
+
+
+        .offer{
+            background-color: white;
+            border: 1px solid grey;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            margin: 10px;
+            margin-bottom: 14px;
+            padding: 4px;
+        }
+        .item_nameSpan{
+            font-size: 24px;
+        }
+        .seller_idDiv{
+            
+        }
+        .form-group{
+            margin-bottom: 0px;
+        }
+        .requestDiv{
+            float:left;
+            margin-bottom: 6px;
+            margin-right: 12px;
+        }
+        body{
+            background-color: #f9f9f9;
+        }
+        textarea{
+            width: 95%;
+        }
+    </style>
+    <!-- Navigation -->
+    <nav >
+       <div id = "navDiv">
+
+           <div id="logo">
+               <img id="logoImg" src="../logo.png">
+           </div>
+           <div id="topNavLinks">
+               
+               <a href="index.html"><span class="topNavButtonSpan">Home</span></a> 
+               <a href="about.html"><span class="topNavButtonSpan">About</span></a>  
+               <a href="contact.html"><span class="topNavButtonSpan">Contact</span></a>
+                 
+           </div>
+           <br>
+
+           <div id = "loggedAsDiv">Logged as: </div>
+           <script type="text/javascript">
+               var username =   $.cookie("username")
+               $("#loggedAsDiv").text("Logged as: "+username)
+           </script>
+       </div>
+    </nav>
+    
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <!-- 
+    <header class="intro-header" style="background-image: url('img/home-bg.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1>Clean Blog</h1>
+                        <hr class="small">
+                        <span class="subheading">A Clean Blog Theme by Start Bootstrap</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+	-->
+    <!-- Main Content -->
+    <!-- posts -->
+    <!-- posts -->
+    <!-- posts -->
+    <!-- posts -->
+    <!-- posts -->
+    <!-- posts -->
+    <div class="container-fluid">
+
+        <div class="row" style="margin-top:80px">
+        	<center>
+		   	<form method="post" >
+		   	<label>Username:<input type="text" name="username" value="{{user}}"></label><br>
+		   	<label>Password:<input style="margin-left:5px;" type="password" name="password" value="{{pas}}"></label><br>
+		   	<input type="submit"></input>
+		   	</form>
+		   	</center>
+		</div>
+	</div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container" style="position: relative;bottom: 20px;">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">Copyright &copy; Your Website 2017</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script type="text/javascript">
+        var h = $( document ).height();
+        $( "#sideNav" ).height(h);
+    </script>
+
 </body>
+
 </html>
